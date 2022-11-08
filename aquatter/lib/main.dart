@@ -1,4 +1,5 @@
 import 'package:aquatter/router/routing.dart';
+import 'package:aquatter/themes/theming.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,20 +15,18 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Aquatter',
         routes: Routing.routes,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: MainTheme.mainTheme,
         home: FutureBuilder(
           future: _isFirstLogin(),
           builder: ((BuildContext context, AsyncSnapshot<bool> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data == true) {
-                Future.delayed(Duration.zero,(){
+                Future.delayed(Duration.zero, () {
                   Navigator.pushNamed(context, 'FirstScreen');
                 });
                 return Container();
               } else {
-                Future.delayed(Duration.zero,(){
+                Future.delayed(Duration.zero, () {
                   Navigator.pushNamed(context, 'PinScreen');
                 });
                 return Container();
@@ -40,6 +39,7 @@ class MyApp extends StatelessWidget {
   }
 
   Future<bool> _isFirstLogin() async {
+    // ignore: no_leading_underscores_for_local_identifiers
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     SharedPreferences prefs = await _prefs;
     if (prefs.getString("email") != null) {

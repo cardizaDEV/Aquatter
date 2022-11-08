@@ -5,32 +5,49 @@ class FirstScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screen_height = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.only(
-            right: screen_height / 12,
-            left: screen_height / 12,
-            top: screen_height / 8,
-            bottom: screen_height / 12),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        children: [
-          const Placeholder(),
-          ListView(
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+          image: DecorationImage(
+            image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"), 
+            fit: BoxFit.cover,
+            opacity: 0.2,
+            )
+        ),
+      child: Scaffold(
+        body: ListView(
             physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.only(top: screen_height / 16),
+            padding: EdgeInsets.only(
+                right: screenHeight / 12,
+                left: screenHeight / 12,
+                top: screenHeight / 8,
+                bottom: screenHeight / 12),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            children: const [
-              ElevatedButton(onPressed: null, child: Text('Login')),
-              ElevatedButton(onPressed: null, child: Text('Register')),
+            children: [
+              const Placeholder(),
+              ListView(
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.only(top: screenHeight / 16),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  ElevatedButton(
+                    child: const Text('Login'),
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, 'LoginScreen'),
+                  ),
+                  ElevatedButton(
+                    child: const Text('Register'),
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, 'RegisterScreen'),
+                  ),
+                ],
+              )
             ],
-          )
-        ],
-      ),
+          ),
+      )
     );
   }
 }
