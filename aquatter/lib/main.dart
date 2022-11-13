@@ -23,12 +23,12 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasData) {
               if (snapshot.data == true) {
                     Future.delayed(Duration.zero, () {
-                      Navigator.pushNamed(context, 'FirstScreen');
+                      Navigator.pushReplacementNamed(context, 'FirstScreen');
                     });
                     return const SplashScreen();
                   } else {
                     Future.delayed(Duration.zero, () {
-                      Navigator.pushNamed(context, 'PinScreen');
+                      Navigator.pushReplacementNamed(context, 'PinScreen');
                     });
                     return const SplashScreen();
                   }

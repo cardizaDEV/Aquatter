@@ -17,22 +17,19 @@ class RegisterScreen extends StatelessWidget {
               opacity: 0.2,
             )),
         child: Scaffold(
-          body: ListView(
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.only(
-                right: screenHeight / 12,
-                left: screenHeight / 12,
-                top: screenHeight / 8,
-                bottom: screenHeight / 12),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            children: [
-              Placeholder(
-                fallbackHeight: screenHeight / 10,
-              ),
-              ListView(
+          body: Center(
+            child: Card(
+              margin: const EdgeInsets.all(defaultPadding*2),
+              color: Colors.white.withOpacity(1),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              child: ListView(
                 physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.only(top: screenHeight / 16),
+                padding: EdgeInsets.only(
+                    right: screenHeight / 12,
+                    left: screenHeight / 12,
+                    top: screenHeight / 16,
+                    bottom: screenHeight / 16),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 children: [
@@ -63,6 +60,17 @@ class RegisterScreen extends StatelessWidget {
                         border: OutlineInputBorder(), labelText: 'Password'),
                   ),
                   const SizedBox(
+                    height: defaultPadding,
+                    width: defaultPadding,
+                  ),
+                  const TextField(
+                    autocorrect: false,
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Pin Code'),
+                  ),
+                  
+                  const SizedBox(
                     height: defaultPadding * 2,
                     width: defaultPadding * 2,
                   ),
@@ -76,10 +84,11 @@ class RegisterScreen extends StatelessWidget {
                         Navigator.pushReplacementNamed(context, 'FirstScreen'),
                   )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
-        ));
+          ),
+        );
   }
 
   void sendEmail(BuildContext context, String email) {
@@ -87,3 +96,4 @@ class RegisterScreen extends StatelessWidget {
     Navigator.pushReplacementNamed(context, 'LoginScreen');
   }
 }
+
