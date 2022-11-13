@@ -1,8 +1,9 @@
 import 'package:aquatter/router/routing.dart';
-import 'package:aquatter/screens/screens.dart';
 import 'package:aquatter/themes/theming.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'screens/screens.dart';
 
 void main() {
   runApp(const MyApp());
