@@ -30,7 +30,13 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
 
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+        side: BorderSide(
+          color: primaryColor.withOpacity(0.4),
+          width: defaultPadding/4,
+        )
+      ),
       margin: const EdgeInsets.symmetric(
           vertical: defaultPadding, horizontal: defaultPadding),
       elevation: defaultPadding,
@@ -39,10 +45,32 @@ class _PostCardState extends State<PostCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
-            height: defaultPadding * 2,
+            height: defaultPadding,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(widget.user, style: 
+                const TextStyle(
+                  fontSize: defaultPadding*2,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              )
+            ],
+          ),
+          const SizedBox(
+            height: defaultPadding,
           ),
           InkWell(
-            child: widget.image,
+            child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: defaultPadding/4, color: primaryColor.withOpacity(0.4)),
+                  borderRadius: BorderRadius.circular(5)
+                ),
+                child: widget.image
+              ),
             onDoubleTap: () {
               if (_liked) {
                   _liked = false;
@@ -58,7 +86,6 @@ class _PostCardState extends State<PostCard> {
             height: defaultPadding,
           ),
           PostCardBottom(
-            user: widget.user,
             likes: _likes,
             liked: _liked,
           ),

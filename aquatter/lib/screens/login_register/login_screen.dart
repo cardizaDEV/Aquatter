@@ -11,7 +11,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // ignore: prefer_final_fields
   TextEditingController _passwordController = TextEditingController();
+  // ignore: prefer_final_fields
   TextEditingController _usernameController = TextEditingController();
   bool _validationUsername = true;
   bool _validationPassword = true;
@@ -90,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (_validationPassword == true &&
                         _validationUsername == true) {
                           await 
+                          // ignore: use_build_context_synchronously
                           Navigator.pushReplacementNamed(context, 'MainScreen');
                         }
                   },

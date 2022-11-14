@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import '../../themes/constants.dart';
 import 'dart:convert' as convert;
@@ -13,9 +11,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  // ignore: prefer_final_fields
   TextEditingController _emailController = TextEditingController();
+  // ignore: prefer_final_fields
   TextEditingController _usernameController = TextEditingController();
+  // ignore: prefer_final_fields
   TextEditingController _passwordController = TextEditingController();
+  // ignore: prefer_final_fields
   TextEditingController _pincodeController = TextEditingController();
   String _usernameError = 'Example: myUsername';
   bool _validationEmail = true;
@@ -142,6 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _emailController.text,
                             _passwordController.text,
                             _pincodeController.text);
+                        // ignore: use_build_context_synchronously
                         Navigator.pushReplacementNamed(context, 'LoginScreen');
                       }
                     }),

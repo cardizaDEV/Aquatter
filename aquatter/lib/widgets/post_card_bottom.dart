@@ -1,37 +1,43 @@
 import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 
 class PostCardBottom extends StatelessWidget {
-  const PostCardBottom({super.key, required this.likes, required this.user, required this.liked});
+  const PostCardBottom({super.key, required this.likes, required this.liked});
 
   final int likes;
-  final String user;
   final bool liked;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(
-          width: defaultPadding,
-        ),
-        InkWell(
+    var parser = EmojiParser();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: defaultPadding*2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          InkWell(
             child: Row(
-          children: [Text(user)],
-        )),
-        const SizedBox(
-          width: defaultPadding,
-        ),
-        InkWell(
-            child: Row(
-          children: [
-            Icon(liked ? Icons.favorite : Icons.favorite_outline),
-            Text(likes.toString())
-          ],
-        ))
-      ],
+            children: [
+              Icon(liked ? Icons.favorite : Icons.favorite_outline),
+              const SizedBox(
+                width: defaultPadding/2,
+              ),
+              Text(likes.toString())
+            ],
+          )),
+          const SizedBox(
+            width: defaultPadding,
+          ),
+          Text(parser.emojify('🐡'),
+            style: const TextStyle(
+              fontSize: defaultPadding*3,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
