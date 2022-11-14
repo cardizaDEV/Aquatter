@@ -16,7 +16,7 @@ class PostCard extends StatefulWidget {
   final bool liked;
 
   @override
-  // ignore: no_logic_in_create_state
+  // ignore: no_logic_in_create_state, unnecessary_this
   State<PostCard> createState() => _PostCardState(this.likes,this.liked);
 }
 
@@ -32,7 +32,7 @@ class _PostCardState extends State<PostCard> {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       margin: const EdgeInsets.symmetric(
-          vertical: defaultPadding, horizontal: defaultPadding * 2),
+          vertical: defaultPadding, horizontal: defaultPadding),
       elevation: defaultPadding,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

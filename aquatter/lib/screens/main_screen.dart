@@ -1,6 +1,7 @@
 import 'package:aquatter/screens/pages/pages.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../themes/constants.dart';
 
@@ -12,7 +13,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _index = 1;
+  int _index = 0;
   int get tabIndex => _index;
   set tabIndex(int v) {
     _index = v;
@@ -30,6 +31,17 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(defaultPadding),
+        child: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: primaryColor, 
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+           ),
+          backgroundColor: primaryColor,
+        ),
+      ),
       backgroundColor: Colors.white,
       bottomNavigationBar: CircleNavBar(
       activeIcons: const [
@@ -51,8 +63,6 @@ class _MainScreenState extends State<MainScreen> {
       circleWidth: defaultPadding*6,
       padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, bottom: defaultPadding),
       cornerRadius: const BorderRadius.only(
-        //topLeft: Radius.circular(8),
-        //topRight: Radius.circular(8),
         bottomRight: Radius.circular(24),
         bottomLeft: Radius.circular(24),
       ),
