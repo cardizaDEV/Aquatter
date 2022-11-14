@@ -19,6 +19,12 @@ class MainTheme {
 				color: primaryColor
 			),
 		),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: primaryColor,
+      selectedItemColor: primaryColor,
+      unselectedItemColor: primaryColor,
+      showUnselectedLabels: true,
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
             elevation: const MaterialStatePropertyAll(5),

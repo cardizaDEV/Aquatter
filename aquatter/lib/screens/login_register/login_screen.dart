@@ -89,7 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {});
                     if (_validationPassword == true &&
                         _validationUsername == true) {
-                          Navigator.pushReplacementNamed(context, 'SocialScreen');
+                          await 
+                          Navigator.pushReplacementNamed(context, 'MainScreen');
                         }
                   },
                 ),

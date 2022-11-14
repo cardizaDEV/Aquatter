@@ -2,6 +2,7 @@ import 'package:aquatter/router/routing.dart';
 import 'package:aquatter/screens/screens.dart';
 import 'package:aquatter/themes/theming.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -10,8 +11,10 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Aquatter',
@@ -22,16 +25,16 @@ class MyApp extends StatelessWidget {
           builder: ((BuildContext context, AsyncSnapshot<bool> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data == true) {
-                    Future.delayed(Duration.zero, () {
-                      Navigator.pushReplacementNamed(context, 'FirstScreen');
-                    });
-                    return const SplashScreen();
-                  } else {
-                    Future.delayed(Duration.zero, () {
-                      Navigator.pushReplacementNamed(context, 'PinScreen');
-                    });
-                    return const SplashScreen();
-                  }
+                Future.delayed(Duration.zero, () {
+                  Navigator.pushReplacementNamed(context, 'FirstScreen');
+                });
+                return const SplashScreen();
+              } else {
+                Future.delayed(Duration.zero, () {
+                  Navigator.pushReplacementNamed(context, 'PinScreen');
+                });
+                return const SplashScreen();
+              }
             } else {
               return const SplashScreen();
             }
