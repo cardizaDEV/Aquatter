@@ -36,17 +36,20 @@ class SocialPage extends StatelessWidget {
 
   Future<List<Widget>> _generateCards() async {
     List<Widget> result = [];
-    final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users'));
+    final response = await http.get(
+        Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/user'));
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
       for (var element in jsonResponse) {
-        result.add(PostCard(
-          user: element['username'],
-          image: element['lastImage'],
-          likes: element['likes'],
-          liked: false,
-        ));
+        for (var post in element['posts']) {
+          result.add(PostCard(
+            title: post['title'],
+            user: element['username'],
+            image: post['image'],
+            likes: post['likes'],
+            liked: false,
+          ));
+        }
       }
     } else {
       // ignore: avoid_print

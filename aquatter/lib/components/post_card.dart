@@ -8,9 +8,10 @@ class PostCard extends StatefulWidget {
       required this.user,
       required this.image,
       required this.likes,
-      required this.liked});
+      required this.liked, required this.title});
 
   final String user;
+  final String title;
   final String image;
   final int likes;
   final bool liked;
@@ -62,6 +63,8 @@ class _PostCardState extends State<PostCard> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: PostCardBottom(
+                          title: widget.title,
+                          user: widget.user,
                           likes: _likes,
                           liked: _liked,
                         ),

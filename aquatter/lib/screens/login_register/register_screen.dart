@@ -161,6 +161,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+    //TODO SHARED PREFERENCES
+
   Future<bool> _registerUser(
       String username, String email, String password, String pincode) async {
     final data = {
@@ -170,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'username': username,
     };
     final response = await http.post(
-      Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/users/'),
+      Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/user/'),
       body: data,
     );
     if (response.statusCode == 201) {
@@ -183,7 +185,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<bool> _usernameExisting(String username) async {
     bool result = false;
     final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+        'https://63722218025414c637071928.mockapi.io/Aquatter/user?username=$username'));
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
       for (var element in jsonResponse) {

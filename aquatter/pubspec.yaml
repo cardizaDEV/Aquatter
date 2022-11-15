@@ -65,9 +65,9 @@ flutter:
     - lib/media/Aquatter_2.png
     - lib/media/Aquatter_3.png
     - lib/media/Aquatter_4.png
-    - lib/media/star.png
-    - lib/media/star_2.png
-    - lib/media/star_3.png
+    - lib/media/white_star.png
+    - lib/media/yellow_star.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

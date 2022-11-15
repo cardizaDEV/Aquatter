@@ -110,10 +110,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  //TODO SHARED PREFERENCES
+
   Future<bool> _usernameExisting(String username) async {
     bool result = false;
     final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+        'https://63722218025414c637071928.mockapi.io/Aquatter/user?username=$username'));
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
       for (var element in jsonResponse) {
@@ -131,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<bool> _isTheRealPassword(String username, String password) async {
     bool result = false;
     final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+        'https://63722218025414c637071928.mockapi.io/Aquatter/user?username=$username'));
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
       for (var element in jsonResponse) {
