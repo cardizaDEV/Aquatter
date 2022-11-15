@@ -1,4 +1,5 @@
 import 'package:aquatter/components/post_card.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -13,8 +14,13 @@ class SocialPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
         if (snapshot.hasData &&
             snapshot.connectionState == ConnectionState.done) {
-          return ListView(
-            children: snapshot.data ?? [],
+          List<Widget> cards = snapshot.data ?? [];
+          return Swiper(
+            itemCount: cards.length,
+            itemBuilder: (context, index) {
+              final card = cards[index];
+              return card;
+            },
           );
         } else {
           return Padding(
@@ -37,9 +43,7 @@ class SocialPage extends StatelessWidget {
       for (var element in jsonResponse) {
         result.add(PostCard(
           user: element['username'],
-          image: Image.network(
-            element['lastImage']
-            ),
+          image: element['lastImage'],
           likes: element['likes'],
           liked: false,
         ));

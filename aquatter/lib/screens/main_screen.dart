@@ -30,65 +30,56 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(defaultPadding),
-          child: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: primaryColor, 
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.light,
-             ),
-            backgroundColor: primaryColor,
-          ),
+    return Scaffold(
+      extendBody: true,
+      appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: primaryColor, 
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+           ),
+          backgroundColor: primaryColor,
+          title: const Center(child: Image(image: AssetImage('lib/media/Aquatter_4.png')))
         ),
-        
-        bottomNavigationBar: CircleNavBar(
-        activeIcons: const [
-          Icon(Icons.people, color: Colors.white),
-          Icon(Icons.search, color: Colors.white),
-          Icon(Icons.add, color: Colors.white),
-          Icon(Icons.settings, color: Colors.white),
-          Icon(Icons.person, color: Colors.white),
-        ],
-        inactiveIcons: const [
-          Icon(Icons.people, color: Colors.white),
-          Icon(Icons.search, color: Colors.white),
-          Icon(Icons.add, color: Colors.white),
-          Icon(Icons.settings, color: Colors.white),
-          Icon(Icons.person, color: Colors.white),
-        ],
-        color: primaryColor,
-        height: 60,
-        circleWidth: defaultPadding*6,
-        padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, bottom: defaultPadding),
-        cornerRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(24),
-          bottomLeft: Radius.circular(24),
-        ),
-        elevation: 10,
-        activeIndex: _index,
-        onTab: (v) {
-          _index = v;
-          pageController.jumpToPage(_index);
+      bottomNavigationBar: CircleNavBar(
+      activeIcons: const [
+        Icon(Icons.people, color: Colors.white),
+        Icon(Icons.search, color: Colors.white),
+        Icon(Icons.add, color: Colors.white),
+        Icon(Icons.settings, color: Colors.white),
+        Icon(Icons.person, color: Colors.white),
+      ],
+      inactiveIcons: const [
+        Icon(Icons.people, color: Colors.white),
+        Icon(Icons.search, color: Colors.white),
+        Icon(Icons.add, color: Colors.white),
+        Icon(Icons.settings, color: Colors.white),
+        Icon(Icons.person, color: Colors.white),
+      ],
+      color: primaryColor,
+      height: 60,
+      circleWidth: defaultPadding*6,
+      //padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, bottom: defaultPadding),
+      elevation: 10,
+      activeIndex: _index,
+      onTab: (v) {
+        _index = v;
+        pageController.jumpToPage(_index);
+      },
+    ),
+    body: PageView(
+      controller: pageController,
+      onPageChanged: (v) {
+          tabIndex = v;
         },
-      ),
-      body: PageView(
-        controller: pageController,
-        onPageChanged: (v) {
-            tabIndex = v;
-          },
-          children: const [
-             SocialPage(),
-             SearchPage(),
-             PostPage(),
-             ManagerPage(),
-             ProfilePage()
-          ],
-      ),
-      ),
+        children: const [
+           SocialPage(),
+           SearchPage(),
+           PostPage(),
+           ManagerPage(),
+           ProfilePage()
+        ],
+    ),
     );
   }
 }

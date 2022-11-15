@@ -14,27 +14,42 @@ class PostCardBottom extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: defaultPadding*2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          InkWell(
-            child: Row(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(liked ? Icons.favorite : Icons.favorite_outline),
+              InkWell(
+                child: Row(
+                children: [
+                  Tab(
+                    height: defaultPadding*3,
+                    child: liked ? Image.asset("lib/media/star_3.png") : Image.asset("lib/media/star_2.png"),
+                  ),
+                  const SizedBox(
+                    width: defaultPadding/2,
+                  ),
+                  Text(likes.toString() , style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: defaultPadding*3,
+                  ),)
+                ],
+              )),
               const SizedBox(
-                width: defaultPadding/2,
+                width: defaultPadding,
               ),
-              Text(likes.toString())
+              Text(parser.emojify('🐡'),
+                style: const TextStyle(
+                  fontSize: defaultPadding*4,
+                ),
+              )
             ],
-          )),
-          const SizedBox(
-            width: defaultPadding,
           ),
-          Text(parser.emojify('🐡'),
-            style: const TextStyle(
-              fontSize: defaultPadding*3,
-            ),
+          const SizedBox(
+            height: defaultPadding*2,
           )
         ],
       ),
