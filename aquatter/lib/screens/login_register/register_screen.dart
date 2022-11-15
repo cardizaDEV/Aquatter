@@ -161,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-    //TODO SHARED PREFERENCES
+  //TODO SHARED PREFERENCES
 
   Future<bool> _registerUser(
       String username, String email, String password, String pincode) async {

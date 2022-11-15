@@ -47,6 +47,7 @@ class SocialPage extends StatelessWidget {
             user: element['username'],
             image: post['image'],
             likes: post['likes'],
+            comments: 0,
             liked: false,
           ));
         }

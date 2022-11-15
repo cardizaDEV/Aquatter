@@ -8,12 +8,13 @@ class PostCard extends StatefulWidget {
       required this.user,
       required this.image,
       required this.likes,
-      required this.liked, required this.title});
+      required this.liked, required this.title, required this.comments});
 
   final String user;
   final String title;
   final String image;
   final int likes;
+  final int comments;
   final bool liked;
 
   @override
@@ -63,6 +64,7 @@ class _PostCardState extends State<PostCard> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: PostCardBottom(
+                          comments: widget.comments,
                           title: widget.title,
                           user: widget.user,
                           likes: _likes,
@@ -74,6 +76,7 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               onDoubleTap: () {
+                //TODO POST LIKES TO RESTAPI
                 if (_liked) {
                   _liked = false;
                   _likes--;

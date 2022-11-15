@@ -8,9 +8,10 @@ class PostCardBottom extends StatefulWidget {
       required this.likes,
       required this.liked,
       required this.user,
-      required this.title});
+      required this.title, required this.comments});
 
   final int likes;
+  final int comments;
   final bool liked;
   final String user;
   final String title;
@@ -87,36 +88,47 @@ class _PostCardBottomState extends State<PostCardBottom> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               InkWell(
-                  child: Row(
-                children: [
-                  Tab(
-                    height: defaultPadding * 3,
-                    child: widget.liked
-                        ? Image.asset("lib/media/yellow_star.png")
-                        : Image.asset("lib/media/white_star.png"),
-                  ),
-                  const SizedBox(
-                    width: defaultPadding / 2,
-                  ),
-                  Text(
-                    widget.likes.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: defaultPadding * 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.star, color: widget.liked ? Colors.yellow : Colors.white,),
+                    const SizedBox(
+                      width: defaultPadding / 2,
                     ),
-                  )
-                ],
-              )),
-              const SizedBox(
-                width: defaultPadding,
-              ),
-              Text(
-                parser.emojify('🐡'),
-                style: const TextStyle(
-                  fontSize: defaultPadding * 4,
+                    Text(
+                      widget.likes.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: defaultPadding * 3,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: defaultPadding *2,
+                    ),
+                    const Icon(Icons.forum, color: Colors.white,),
+                    const SizedBox(
+                      width: defaultPadding / 2,
+                    ),
+                    Text(
+                      widget.comments.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: defaultPadding * 3,
+                      ),
+                    ),
+                  ],
+                )),
+                const SizedBox(
+                  width: defaultPadding,
                 ),
-              )
-            ],
+                Text(
+                  parser.emojify('🐡'),
+                  style: const TextStyle(
+                    fontSize: defaultPadding * 4,
+                  ),
+                )
+              ],
           ),
           const SizedBox(
             height: defaultPadding * 2,
