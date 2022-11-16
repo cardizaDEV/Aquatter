@@ -104,7 +104,7 @@ class _SocialPageState extends State<SocialPage> {
               likes: posts[randomPost]['likes'],
               liked: false,
               title: posts[randomPost]['title'],
-              comments: comments.length));
+              comments: comments));
         }
         if (!mounted) return;
         setState(() {});

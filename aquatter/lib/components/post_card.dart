@@ -14,7 +14,7 @@ class PostCard extends StatefulWidget {
   final String title;
   final String image;
   final int likes;
-  final int comments;
+  final List<dynamic> comments;
   final bool liked;
 
   @override
