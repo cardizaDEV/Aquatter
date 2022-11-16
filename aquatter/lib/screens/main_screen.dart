@@ -68,6 +68,7 @@ class _MainScreenState extends State<MainScreen> {
       },
     ),
     body: PageView(
+      physics: const NeverScrollableScrollPhysics(),
       controller: pageController,
       onPageChanged: (v) {
           tabIndex = v;

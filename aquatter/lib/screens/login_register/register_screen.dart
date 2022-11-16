@@ -133,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       setState(() {});
                       _emailController.text.isEmpty
                           ? _validationEmail = false
-                          : _validationEmail = true;
+                          : _validationEmail = true; //TODO EMAIL VALIDATION @GMAIL.COM
                       setState(() {});
                       if (_validationEmail == true &&
                           _validationUsername == true &&
