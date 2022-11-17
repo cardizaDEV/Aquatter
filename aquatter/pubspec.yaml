@@ -39,6 +39,9 @@ dependencies:
   shared_preferences: ^2.0.15
   circle_nav_bar: ^2.0.0
   http: ^0.13.5
+  flutter_emoji: ^2.4.0
+  flutter_swiper_plus: ^2.0.4
+  pin_code_fields: ^7.4.0
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +64,11 @@ flutter:
     - lib/media/hatching-ge35f10e1a_1280.png
     - lib/media/Aquatter.png
     - lib/media/Aquatter_2.png
+    - lib/media/Aquatter_3.png
+    - lib/media/Aquatter_4.png
+    - lib/media/white_star.png
+    - lib/media/yellow_star.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

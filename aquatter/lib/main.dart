@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
     // ignore: no_leading_underscores_for_local_identifiers
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     SharedPreferences prefs = await _prefs;
-    if (prefs.getString("email") != null) {
+    if (prefs.getString("username") != null) {
       return false;
     } else {
       return true;

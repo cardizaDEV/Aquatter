@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import '../../themes/constants.dart';
 import 'dart:convert' as convert;
@@ -13,9 +11,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  // ignore: prefer_final_fields
   TextEditingController _emailController = TextEditingController();
+  // ignore: prefer_final_fields
   TextEditingController _usernameController = TextEditingController();
+  // ignore: prefer_final_fields
   TextEditingController _passwordController = TextEditingController();
+  // ignore: prefer_final_fields
   TextEditingController _pincodeController = TextEditingController();
   String _usernameError = 'Example: myUsername';
   bool _validationEmail = true;
@@ -107,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: defaultPadding * 2,
                 ),
                 ElevatedButton(
-                    child: const Text('Send'),
+                    child: const Text('Register'),
                     onPressed: () async {
                       _emailController.text.isEmpty
                           ? _validationEmail = false
@@ -131,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       setState(() {});
                       _emailController.text.isEmpty
                           ? _validationEmail = false
-                          : _validationEmail = true;
+                          : _validationEmail = true; //TODO EMAIL VALIDATION @GMAIL.COM
                       setState(() {});
                       if (_validationEmail == true &&
                           _validationUsername == true &&
@@ -142,6 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _emailController.text,
                             _passwordController.text,
                             _pincodeController.text);
+                        // ignore: use_build_context_synchronously
                         Navigator.pushReplacementNamed(context, 'LoginScreen');
                       }
                     }),
@@ -167,7 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'username': username,
     };
     final response = await http.post(
-      Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/users/'),
+      Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/user/'),
       body: data,
     );
     if (response.statusCode == 201) {
@@ -180,7 +183,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<bool> _usernameExisting(String username) async {
     bool result = false;
     final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+        'https://63722218025414c637071928.mockapi.io/Aquatter/user?username=$username'));
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
       for (var element in jsonResponse) {

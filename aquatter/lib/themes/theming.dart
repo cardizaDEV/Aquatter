@@ -2,7 +2,8 @@ import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
 
 class MainTheme {
-  static const Color primaryColor = Color.fromRGBO(171, 171, 248, 1);
+  static const Color primaryColor = Color.fromRGBO(113, 167, 207, 1);
+  static const Color secondaryColor = Color.fromRGBO(113, 207, 200, 1);
 
   static ThemeData mainTheme = ThemeData(
     scaffoldBackgroundColor: Colors.transparent,
