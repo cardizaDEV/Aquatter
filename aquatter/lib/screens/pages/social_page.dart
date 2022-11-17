@@ -18,7 +18,9 @@ class _SocialPageState extends State<SocialPage> {
   SwiperController swiperController = SwiperController();
   var postCards = Queue<Widget>();
   int actualCardIndex = 1;
+  // ignore: prefer_typing_uninitialized_variables
   var initial;
+  // ignore: prefer_typing_uninitialized_variables
   var distance;
 
   @override

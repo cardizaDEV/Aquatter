@@ -109,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: defaultPadding * 2,
                 ),
                 ElevatedButton(
-                    child: const Text('Send'),
+                    child: const Text('Register'),
                     onPressed: () async {
                       _emailController.text.isEmpty
                           ? _validationEmail = false
@@ -160,8 +160,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-
-  //TODO SHARED PREFERENCES
 
   Future<bool> _registerUser(
       String username, String email, String password, String pincode) async {

@@ -111,6 +111,7 @@ class _CommentState extends State<Comment> {
               ),
               onTap: () {
                 //TODO POST LIKES TO RESTAPI
+                //TODO MAKE YOUR OWN COMMENTS
                 if (_liked) {
                   _liked = false;
                   _likes--;

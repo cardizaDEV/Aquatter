@@ -2,6 +2,7 @@ import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -91,10 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {});
                     if (_validationPassword == true &&
                         _validationUsername == true) {
-                          await 
+                      await _setLoged(_usernameController.text);
+                      await
                           // ignore: use_build_context_synchronously
                           Navigator.pushReplacementNamed(context, 'MainScreen');
-                        }
+                    }
                   },
                 ),
                 ElevatedButton(
@@ -109,8 +111,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  //TODO SHARED PREFERENCES
 
   Future<bool> _usernameExisting(String username) async {
     bool result = false;
@@ -148,5 +148,14 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Request failed with status: ${response.statusCode}.');
     }
     return result;
+  }
+
+  Future<bool> _setLoged(String username) async {
+    await Future.delayed(const Duration(seconds: 2));
+    // ignore: no_leading_underscores_for_local_identifiers
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    SharedPreferences prefs = await _prefs;
+    await prefs.setString('username', username);
+    return true;
   }
 }
