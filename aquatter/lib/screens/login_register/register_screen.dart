@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import '../../themes/constants.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:email_validator/email_validator.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -129,9 +128,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ? _validationPincode = false
                           : _validationPincode = true;
                       setState(() {});
-                      _emailController.text.isEmpty
+                      _emailController.text.isEmpty || !(EmailValidator.validate(_emailController.text))
                           ? _validationEmail = false
-                          : _validationEmail = true;
+                          : _validationEmail = true; 
                       setState(() {});
                       if (_validationEmail == true &&
                           _validationUsername == true &&
