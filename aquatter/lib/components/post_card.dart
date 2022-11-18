@@ -1,6 +1,7 @@
 import 'package:aquatter/themes/constants.dart';
 import 'package:aquatter/widgets/post_card_bottom.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class PostCard extends StatefulWidget {
   const PostCard(
@@ -8,9 +9,15 @@ class PostCard extends StatefulWidget {
       required this.user,
       required this.image,
       required this.likes,
-      required this.liked, required this.title, required this.comments});
+      required this.liked,
+      required this.title,
+      required this.comments,
+      required this.userId,
+      required this.id});
 
   final String user;
+  final String userId;
+  final String id;
   final String title;
   final String image;
   final int likes;
@@ -59,11 +66,11 @@ class _PostCardState extends State<PostCard> {
                     children: [
                       Image(
                           fit: BoxFit.fitHeight,
-                          image: NetworkImage(widget.image)
-                      ),
+                          image: NetworkImage(widget.image)),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: PostCardBottom(
+                          userId: widget.userId,
                           comments: widget.comments,
                           title: widget.title,
                           user: widget.user,
@@ -76,7 +83,6 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               onDoubleTap: () {
-                //TODO POST LIKES TO RESTAPI
                 if (_liked) {
                   _liked = false;
                   _likes--;
@@ -84,8 +90,19 @@ class _PostCardState extends State<PostCard> {
                   _liked = true;
                   _likes++;
                 }
+                _updateLikes();
                 setState(() {});
               },
             )));
+  }
+
+  void _updateLikes() async {
+    var userid = widget.userId;
+    var id = widget.id;
+    await http.put(
+      Uri.parse(
+          'https://63722218025414c637071928.mockapi.io/Aquatter/user/$userid/post/$id'),
+      body: {'likes': _likes.toString()},
+    );
   }
 }

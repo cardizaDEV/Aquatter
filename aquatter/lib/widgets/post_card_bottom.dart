@@ -10,12 +10,13 @@ class PostCardBottom extends StatefulWidget {
       required this.liked,
       required this.user,
       required this.title,
-      required this.comments});
+      required this.comments, required this.userId});
 
   final int likes;
   final List<dynamic> comments;
   final bool liked;
   final String user;
+  final String userId;
   final String title;
 
   @override
@@ -183,7 +184,7 @@ class _PostCardBottomState extends State<PostCardBottom> {
   List<Widget> _generateComments() {
     List<Comment> comments = [];
     for (var comment in widget.comments) {
-      comments.add(Comment(user: comment['user'], comment: comment['comment'], liked: false,likes: comment['likes'],));
+      comments.add(Comment(user: comment['user'], userId: widget.userId, comment: comment['comment'], liked: false,likes: comment['likes'],commentId: comment['id'],postId: comment['postId'],));
     }
     return comments;
   }

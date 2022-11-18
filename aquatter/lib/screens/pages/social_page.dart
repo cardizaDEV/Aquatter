@@ -1,6 +1,4 @@
 import 'dart:collection';
-import 'dart:math';
-
 import 'package:aquatter/components/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
@@ -105,9 +103,11 @@ class _SocialPageState extends State<SocialPage> {
             Map<String, dynamic> postMap =
                 convert.jsonDecode(postResponse.body);
             postCards.add(PostCard(
+                id: id,
+                userId: userId,
                 user: post.keys.elementAt(0),
                 image: postMap['image'],
-                likes: postMap['likes'],
+                likes: int.parse(postMap['likes'].toString()),
                 liked: false,
                 title: postMap['title'],
                 comments: postMap['comments']));
