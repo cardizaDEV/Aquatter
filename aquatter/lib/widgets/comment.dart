@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:http/http.dart' as http;
 
 import '../themes/constants.dart';
 
@@ -9,10 +10,16 @@ class Comment extends StatefulWidget {
       required this.user,
       required this.comment,
       required this.liked,
-      required this.likes});
+      required this.likes,
+      required this.userId,
+      required this.postId,
+      required this.commentId});
 
   final String user;
   final String comment;
+  final String userId;
+  final String postId;
+  final String commentId;
   final bool liked;
   final int likes;
 
@@ -84,7 +91,7 @@ class _CommentState extends State<Comment> {
                         children: [
                           Icon(
                             Icons.star,
-                            size: defaultPadding*3,
+                            size: defaultPadding * 3,
                             color: _liked ? Colors.yellow : Colors.grey,
                           ),
                           const SizedBox(
@@ -100,7 +107,7 @@ class _CommentState extends State<Comment> {
                         ],
                       ),
                       Text(
-                        _likes >=75 ? parser.emojify('🐡') : '',
+                        _likes >= 75 ? parser.emojify('🐡') : '',
                         style: const TextStyle(
                           fontSize: defaultPadding * 3,
                         ),
@@ -110,8 +117,6 @@ class _CommentState extends State<Comment> {
                 ],
               ),
               onTap: () {
-                //TODO POST LIKES TO RESTAPI
-                //TODO MAKE YOUR OWN COMMENTS
                 if (_liked) {
                   _liked = false;
                   _likes--;
@@ -119,12 +124,24 @@ class _CommentState extends State<Comment> {
                   _liked = true;
                   _likes++;
                 }
+                _updateLikes();
                 setState(() {});
               },
             )
           ],
         ),
       ),
+    );
+  }
+
+  void _updateLikes() async {
+    var userid = widget.userId;
+    var postid = widget.postId;
+    var commentid = widget.commentId;
+    await http.put(
+      Uri.parse(
+          'https://63722218025414c637071928.mockapi.io/Aquatter/user/$userid/post/$postid/comments/$commentid'),
+      body: {'likes': _likes.toString()},
     );
   }
 }
