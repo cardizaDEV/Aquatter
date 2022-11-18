@@ -25,12 +25,12 @@ class _SocialPageState extends State<SocialPage> {
 
   @override
   void initState() {
+    _generateCards();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _generateCards();
     return Container(
       decoration: const BoxDecoration(
           color: Colors.white,
@@ -75,52 +75,58 @@ class _SocialPageState extends State<SocialPage> {
     );
   }
 
-  void _generateCards() {
-    if (postCards.length <= 5 || actualCardIndex >= postCards.length - 10) {
-      _generateNewCard();
-    }
-    setState(() {});
-  }
-
-  void _generateNewCard() async {
+  void _generateCards() async {
     final usersResponse = await http.get(
         Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/user'));
     if (usersResponse.statusCode == 200) {
-      var users = convert.jsonDecode(usersResponse.body) as List<dynamic>;
-      int randomUser = Random().nextInt(users.length);
-      users[randomUser];
-      final postResponse = await http.get(Uri.parse(
-          // ignore: prefer_interpolation_to_compose_strings
-          'https://63722218025414c637071928.mockapi.io/Aquatter/user/' +
-              users[randomUser]['id'] +
-              '/post'));
-      if (postResponse.statusCode == 200) {
-        var posts = convert.jsonDecode(postResponse.body) as List<dynamic>;
-        int randomPost = Random().nextInt(posts.length + 1);
-        randomPost = randomPost == 0 ? randomPost : randomPost - 1;
-        if (posts.isNotEmpty) {
-          var comments = posts[randomPost]['comments'] as List<dynamic>;
-          postCards.add(PostCard(
-              user: users[randomUser]['username'],
-              image: posts[randomPost]['image'],
-              likes: posts[randomPost]['likes'],
-              liked: false,
-              title: posts[randomPost]['title'],
-              comments: comments));
+      List<Map<String, Map<String, dynamic>>> postList = [];
+      List<dynamic> users = convert.jsonDecode(usersResponse.body);
+      for (var user in users) {
+        for (var post in user['posts']) {
+          postList.add({user['username']: post});
         }
-        if (!mounted) return;
-        setState(() {});
-      } else if (postResponse.statusCode == 429) {
-        await Future.delayed(const Duration(seconds: 1));
-      } else {
-        // ignore: avoid_print
-        print('Request failed with status: ${postResponse.statusCode}.');
+      }
+      postList.sort(
+        (a, b) {
+          var postDateA = a.values.map((post) => post['postdate']);
+          var postDateB = b.values.map((post) => post['postdate']);
+          return postDateA.toString().compareTo(postDateB.toString());
+        },
+      );
+      if (postList.isNotEmpty) {
+        for (var post in postList) {
+          var userId =
+              post.values.map((e) => e['userId'].toString()).elementAt(0);
+          var id = post.values.map((e) => e['id'].toString()).elementAt(0);
+          final postResponse = await http.get(Uri.parse(
+              // ignore: prefer_interpolation_to_compose_strings
+              'https://63722218025414c637071928.mockapi.io/Aquatter/user/$userId/post/$id'));
+          if (postResponse.statusCode == 200) {
+            Map<String, dynamic> postMap =
+                convert.jsonDecode(postResponse.body);
+            postCards.add(PostCard(
+                user: post.keys.elementAt(0),
+                image: postMap['image'],
+                likes: postMap['likes'],
+                liked: false,
+                title: postMap['title'],
+                comments: postMap['comments']));
+            if (!mounted) return;
+            setState(() {});
+          } else if (postResponse.statusCode == 429) {
+            await Future.delayed(const Duration(seconds: 1));
+          } else {
+            // ignore: avoid_print
+            print(
+                'Post Request failed with status: ${postResponse.statusCode}.');
+          }
+        }
       }
     } else if (usersResponse.statusCode == 429) {
       await Future.delayed(const Duration(seconds: 1));
     } else {
       // ignore: avoid_print
-      print('Request failed with status: ${usersResponse.statusCode}.');
+      print('User Request failed with status: ${usersResponse.statusCode}.');
     }
     if (!mounted) return;
     setState(() {});
