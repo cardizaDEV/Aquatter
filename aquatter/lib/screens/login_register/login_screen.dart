@@ -2,6 +2,7 @@ import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,7 +12,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // ignore: prefer_final_fields
   TextEditingController _passwordController = TextEditingController();
+  // ignore: prefer_final_fields
   TextEditingController _usernameController = TextEditingController();
   bool _validationUsername = true;
   bool _validationPassword = true;
@@ -89,8 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {});
                     if (_validationPassword == true &&
                         _validationUsername == true) {
-                          Navigator.pushReplacementNamed(context, 'SocialScreen');
-                        }
+                      await _setLoged(_usernameController.text);
+                      await
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushReplacementNamed(context, 'MainScreen');
+                    }
                   },
                 ),
                 ElevatedButton(
@@ -109,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<bool> _usernameExisting(String username) async {
     bool result = false;
     final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+        'https://63722218025414c637071928.mockapi.io/Aquatter/user?username=$username'));
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
       for (var element in jsonResponse) {
@@ -127,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<bool> _isTheRealPassword(String username, String password) async {
     bool result = false;
     final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+        'https://63722218025414c637071928.mockapi.io/Aquatter/user?username=$username'));
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
       for (var element in jsonResponse) {
@@ -142,5 +148,14 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Request failed with status: ${response.statusCode}.');
     }
     return result;
+  }
+
+  Future<bool> _setLoged(String username) async {
+    await Future.delayed(const Duration(seconds: 2));
+    // ignore: no_leading_underscores_for_local_identifiers
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    SharedPreferences prefs = await _prefs;
+    await prefs.setString('username', username);
+    return true;
   }
 }
