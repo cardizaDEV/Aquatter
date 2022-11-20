@@ -43,6 +43,7 @@ dependencies:
   flutter_swiper_plus: ^2.0.4
   pin_code_fields: ^7.4.0
   email_validator: ^2.1.17
+  provider: ^6.0.4
   
 dev_dependencies:
   flutter_test:

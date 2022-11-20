@@ -1,8 +1,11 @@
+import 'package:aquatter/providers/posts_provider.dart';
+import 'package:aquatter/providers/user_provider.dart';
 import 'package:aquatter/router/routing.dart';
 import 'package:aquatter/screens/screens.dart';
 import 'package:aquatter/themes/theming.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -15,31 +18,36 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Aquatter',
-        routes: Routing.routes,
-        theme: MainTheme.mainTheme,
-        home: FutureBuilder(
-          future: _isFirstLogin(),
-          builder: ((BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data == true) {
-                Future.delayed(Duration.zero, () {
-                  Navigator.pushReplacementNamed(context, 'FirstScreen');
-                });
-                return const SplashScreen();
-              } else {
-                Future.delayed(Duration.zero, () {
-                  Navigator.pushReplacementNamed(context, 'PinScreen');
-                });
-                return const SplashScreen();
-              }
-            } else {
-              return const SplashScreen();
-            }
-          }),
-        ));
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+          ChangeNotifierProvider<PostsProvider>(create: (_) => PostsProvider()),
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Aquatter',
+            routes: Routing.routes,
+            theme: MainTheme.mainTheme,
+            home: FutureBuilder(
+              future: _isFirstLogin(),
+              builder: ((BuildContext context, AsyncSnapshot<bool> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data == true) {
+                    Future.delayed(Duration.zero, () {
+                      Navigator.pushReplacementNamed(context, 'FirstScreen');
+                    });
+                    return const SplashScreen();
+                  } else {
+                    Future.delayed(Duration.zero, () {
+                      Navigator.pushReplacementNamed(context, 'PinScreen');
+                    });
+                    return const SplashScreen();
+                  }
+                } else {
+                  return const SplashScreen();
+                }
+              }),
+            )));
   }
 
   Future<bool> _isFirstLogin() async {

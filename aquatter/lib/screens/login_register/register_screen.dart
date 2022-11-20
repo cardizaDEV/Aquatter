@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'username': username,
     };
     final response = await http.post(
-      Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/user/'),
+      Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/users/'),
       body: data,
     );
     if (response.statusCode == 201) {
@@ -184,7 +184,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<bool> _usernameExisting(String username) async {
     bool result = false;
     final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/user?username=$username'));
+        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
       for (var element in jsonResponse) {

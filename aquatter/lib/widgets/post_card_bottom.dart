@@ -10,7 +10,8 @@ class PostCardBottom extends StatefulWidget {
       required this.liked,
       required this.user,
       required this.title,
-      required this.comments, required this.userId});
+      required this.comments,
+      required this.userId});
 
   final int likes;
   final List<dynamic> comments;
@@ -91,77 +92,104 @@ class _PostCardBottomState extends State<PostCardBottom> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               InkWell(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: widget.liked ? Colors.yellow : Colors.white,
-                    ),
-                    const SizedBox(
-                      width: defaultPadding / 2,
-                    ),
-                    Text(
-                      widget.likes.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: defaultPadding * 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: widget.liked ? Colors.yellow : Colors.white,
                       ),
-                    ),
-                    const SizedBox(
-                      width: defaultPadding * 2,
-                    ),
-                    const Icon(
-                      Icons.forum,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(
-                      width: defaultPadding / 2,
-                    ),
-                    Text(
-                      widget.comments.length.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: defaultPadding * 3,
+                      const SizedBox(
+                        width: defaultPadding / 2,
                       ),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPadding * 3,
-                            vertical: defaultPadding * 10),
-                        child: Card(
-                          semanticContainer: true,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(
-                                color: primaryColor.withOpacity(0.4),
-                                width: defaultPadding / 4,
-                              )),
-                          margin: const EdgeInsets.symmetric(
-                              vertical: defaultPadding,
-                              horizontal: defaultPadding),
-                          elevation: defaultPadding,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListView(
-                              scrollDirection: Axis.vertical,
-                              clipBehavior: Clip.antiAlias,
-                              children: _generateComments(),
-                            ),
-                          ),
+                      Text(
+                        widget.likes.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: defaultPadding * 3,
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
+                      ),
+                      const SizedBox(
+                        width: defaultPadding * 2,
+                      ),
+                      const Icon(
+                        Icons.forum,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: defaultPadding / 2,
+                      ),
+                      Text(
+                        widget.comments.length.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: defaultPadding * 3,
+                        ),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return FutureBuilder(
+                            future: _generateComments(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<List<Widget>> snapshot) {
+                              if (snapshot.hasData) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: defaultPadding * 3,
+                                      vertical: defaultPadding * 10),
+                                  child: Card(
+                                    semanticContainer: true,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        side: BorderSide(
+                                          color: primaryColor.withOpacity(0.4),
+                                          width: defaultPadding / 4,
+                                        )),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: defaultPadding,
+                                        horizontal: defaultPadding),
+                                    elevation: defaultPadding,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ListView(
+                                        scrollDirection: Axis.vertical,
+                                        clipBehavior: Clip.antiAlias,
+                                        children: snapshot.data ?? [],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: defaultPadding * 3,
+                                        vertical: defaultPadding * 10),
+                                    child: Card(
+                                      semanticContainer: true,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          side: BorderSide(
+                                            color:
+                                                primaryColor.withOpacity(0.4),
+                                            width: defaultPadding / 4,
+                                          )),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: defaultPadding,
+                                          horizontal: defaultPadding),
+                                      elevation: defaultPadding,
+                                      child: Container()
+                                    ));
+                              }
+                            });
+                      },
+                    );
+                  }),
               const SizedBox(
                 width: defaultPadding,
               ),
@@ -181,10 +209,18 @@ class _PostCardBottomState extends State<PostCardBottom> {
     );
   }
 
-  List<Widget> _generateComments() {
+  Future<List<Widget>> _generateComments() async {
     List<Comment> comments = [];
     for (var comment in widget.comments) {
-      comments.add(Comment(user: comment['user'], userId: widget.userId, comment: comment['comment'], liked: false,likes: comment['likes'],commentId: comment['id'],postId: comment['postId'],));
+      comments.add(Comment(
+        user: comment['username'],
+        userId: widget.userId,
+        comment: comment['comment'],
+        liked: false,
+        likes: 2,
+        commentId: comment['id'],
+        postId: comment['postId'],
+      ));
     }
     return comments;
   }

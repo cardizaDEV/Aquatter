@@ -1,9 +1,13 @@
+import 'package:aquatter/providers/posts_provider.dart';
 import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../providers/user_provider.dart';
 
 class PinScreen extends StatefulWidget {
   const PinScreen({super.key});
@@ -59,6 +63,13 @@ class _PinScreenState extends State<PinScreen> {
                   length: 4,
                   onCompleted: (value) async {
                     if (await _isTheRealPincode(value) == true) {
+                      Provider.of<UserProvider>(context, listen: false)
+                          .setUsername(await _getUsername());
+                      // ignore: use_build_context_synchronously
+                      Provider.of<PostsProvider>(context, listen: false)
+                          // ignore: use_build_context_synchronously
+                          .reloadPosts(Provider.of<UserProvider>(context, listen: false).username);
+                      // ignore: use_build_context_synchronously
                       Navigator.pushReplacementNamed(context, 'MainScreen');
                     } else {
                       pinCodeController.clear();
@@ -90,7 +101,7 @@ class _PinScreenState extends State<PinScreen> {
     bool result = false;
     String username = await _getUsername();
     final usersResponse = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/user?username=$username'));
+        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
     if (usersResponse.statusCode == 200) {
       var usersList = convert.jsonDecode(usersResponse.body) as List<dynamic>;
       for (var element in usersList) {
