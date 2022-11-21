@@ -1,7 +1,10 @@
+import 'package:aquatter/providers/comments_provider.dart';
+import 'package:aquatter/providers/user_provider.dart';
 import 'package:aquatter/themes/constants.dart';
 import 'package:aquatter/widgets/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:provider/provider.dart';
 
 class PostCardBottom extends StatefulWidget {
   const PostCardBottom(
@@ -98,6 +101,13 @@ class _PostCardBottomState extends State<PostCardBottom> {
                     children: [
                       Icon(
                         Icons.star,
+                        shadows: const <Shadow>[
+                          Shadow(
+                            //offset: Offset(0.0, 0.0),
+                            blurRadius: defaultPadding * 4,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ],
                         color: widget.liked ? Colors.yellow : Colors.white,
                       ),
                       const SizedBox(
@@ -107,6 +117,13 @@ class _PostCardBottomState extends State<PostCardBottom> {
                         widget.likes.toString(),
                         style: const TextStyle(
                           color: Colors.white,
+                          shadows: <Shadow>[
+                            Shadow(
+                              //offset: Offset(0.0, 0.0),
+                              blurRadius: defaultPadding * 4,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+                          ],
                           fontSize: defaultPadding * 3,
                         ),
                       ),
@@ -115,6 +132,13 @@ class _PostCardBottomState extends State<PostCardBottom> {
                       ),
                       const Icon(
                         Icons.forum,
+                        shadows: <Shadow>[
+                          Shadow(
+                            //offset: Offset(0.0, 0.0),
+                            blurRadius: defaultPadding * 4,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ],
                         color: Colors.white,
                       ),
                       const SizedBox(
@@ -124,6 +148,13 @@ class _PostCardBottomState extends State<PostCardBottom> {
                         widget.comments.length.toString(),
                         style: const TextStyle(
                           color: Colors.white,
+                          shadows: <Shadow>[
+                            Shadow(
+                              //offset: Offset(0.0, 0.0),
+                              blurRadius: defaultPadding * 4,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+                          ],
                           fontSize: defaultPadding * 3,
                         ),
                       ),
@@ -134,7 +165,10 @@ class _PostCardBottomState extends State<PostCardBottom> {
                       context: context,
                       builder: (context) {
                         return FutureBuilder(
-                            future: _generateComments(),
+                            future: _generateComments(Provider.of<UserProvider>(
+                                    context,
+                                    listen: false)
+                                .username),
                             builder: (BuildContext context,
                                 AsyncSnapshot<List<Widget>> snapshot) {
                               if (snapshot.hasData) {
@@ -170,21 +204,20 @@ class _PostCardBottomState extends State<PostCardBottom> {
                                         horizontal: defaultPadding * 3,
                                         vertical: defaultPadding * 10),
                                     child: Card(
-                                      semanticContainer: true,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          side: BorderSide(
-                                            color:
-                                                primaryColor.withOpacity(0.4),
-                                            width: defaultPadding / 4,
-                                          )),
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: defaultPadding,
-                                          horizontal: defaultPadding),
-                                      elevation: defaultPadding,
-                                      child: Container()
-                                    ));
+                                        semanticContainer: true,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            side: BorderSide(
+                                              color:
+                                                  primaryColor.withOpacity(0.4),
+                                              width: defaultPadding / 4,
+                                            )),
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: defaultPadding,
+                                            horizontal: defaultPadding),
+                                        elevation: defaultPadding,
+                                        child: Container()));
                               }
                             });
                       },
@@ -209,15 +242,24 @@ class _PostCardBottomState extends State<PostCardBottom> {
     );
   }
 
-  Future<List<Widget>> _generateComments() async {
+  Future<List<Widget>> _generateComments(String username) async {
     List<Comment> comments = [];
     for (var comment in widget.comments) {
+      bool liked = false;
+      List<dynamic> likes =
+          await Provider.of<CommentsProvider>(context, listen: false)
+              .getCommentLikes(widget.userId, comment['postId'], comment['id']);
+      for (var like in likes) {
+        if (like['username'] == username) {
+          liked = true;
+        }
+      }
       comments.add(Comment(
         user: comment['username'],
         userId: widget.userId,
         comment: comment['comment'],
-        liked: false,
-        likes: 2,
+        liked: liked,
+        likes: likes.length,
         commentId: comment['id'],
         postId: comment['postId'],
       ));

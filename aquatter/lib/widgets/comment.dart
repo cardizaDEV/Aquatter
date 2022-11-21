@@ -1,6 +1,8 @@
+import 'package:aquatter/providers/comments_provider.dart';
+import 'package:aquatter/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../themes/constants.dart';
 
@@ -36,6 +38,7 @@ class _CommentState extends State<Comment> {
   @override
   Widget build(BuildContext context) {
     var parser = EmojiParser();
+    String username = Provider.of<UserProvider>(context, listen: false).username;
     return Card(
       semanticContainer: true,
       shape: RoundedRectangleBorder(
@@ -120,28 +123,20 @@ class _CommentState extends State<Comment> {
                 if (_liked) {
                   _liked = false;
                   _likes--;
+                  Provider.of<CommentsProvider>(context, listen: false)
+                      .removeLike(widget.userId, widget.postId, username, widget.commentId);
                 } else {
                   _liked = true;
                   _likes++;
+                  Provider.of<CommentsProvider>(context, listen: false)
+                      .addLike(widget.userId, widget.postId, username, widget.commentId);
                 }
-                _updateLikes();
                 setState(() {});
               },
             )
           ],
         ),
       ),
-    );
-  }
-
-  void _updateLikes() async {
-    var userid = widget.userId;
-    var postid = widget.postId;
-    var commentid = widget.commentId;
-    await http.put(
-      Uri.parse(
-          'https://63722218025414c637071928.mockapi.io/Aquatter/user/$userid/post/$postid/comments/$commentid'),
-      body: {'likes': _likes.toString()},
     );
   }
 }

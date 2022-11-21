@@ -103,14 +103,4 @@ class PostsProvider extends ChangeNotifier {
           'https://63722218025414c637071928.mockapi.io/Aquatter/users/$userid/posts/$postid/likes/$likeid'),
     );
   }
-
-  Future<int> getCommentLikes(
-      String userid, String postid, String commentId) async {
-    var response = await http.get(
-      Uri.parse(
-          'https://63722218025414c637071928.mockapi.io/Aquatter/users/$userid/posts/$postid/comments/$commentId/likes'),
-    );
-    List<dynamic> likes = json.decode(response.body);
-    return likes.length;
-  }
 }

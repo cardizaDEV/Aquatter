@@ -1,7 +1,7 @@
 import 'package:aquatter/providers/posts_provider.dart';
 import 'package:aquatter/providers/user_provider.dart';
 import 'package:aquatter/themes/constants.dart';
-import 'package:aquatter/widgets/post_card_bottom.dart';
+import 'package:aquatter/components/post_card_bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

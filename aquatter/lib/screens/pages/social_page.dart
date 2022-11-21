@@ -38,12 +38,10 @@ class SocialPage extends StatelessWidget {
                     swiperController.next();
                   }
                 } else {
-                  if (actualCardIndex >= 1) {
-                    swiperController.previous();
-                  } else {
-                    Provider.of<PostsProvider>(context, listen: false)
-                        .reloadPosts(Provider.of<UserProvider>(context, listen: false).username);
-                  }
+                  Provider.of<PostsProvider>(context, listen: false)
+                      .reloadPosts(
+                          Provider.of<UserProvider>(context, listen: false)
+                              .username);
                 }
               },
               child: Swiper(
