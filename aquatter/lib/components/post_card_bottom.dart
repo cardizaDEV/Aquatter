@@ -2,6 +2,7 @@ import 'package:aquatter/providers/comments_provider.dart';
 import 'package:aquatter/providers/user_provider.dart';
 import 'package:aquatter/themes/constants.dart';
 import 'package:aquatter/widgets/comment.dart';
+import 'package:aquatter/widgets/your_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:provider/provider.dart';
@@ -164,38 +165,46 @@ class _PostCardBottomState extends State<PostCardBottom> {
                     showDialog(
                       context: context,
                       builder: (context) {
+                        String username =
+                            Provider.of<UserProvider>(context, listen: false)
+                                .username;
                         return FutureBuilder(
-                            future: _generateComments(Provider.of<UserProvider>(
-                                    context,
-                                    listen: false)
-                                .username),
+                            future: _generateComments(username),
                             builder: (BuildContext context,
                                 AsyncSnapshot<List<Widget>> snapshot) {
                               if (snapshot.hasData) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: defaultPadding * 3,
-                                      vertical: defaultPadding * 10),
-                                  child: Card(
-                                    semanticContainer: true,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                        side: BorderSide(
-                                          color: primaryColor.withOpacity(0.4),
-                                          width: defaultPadding / 4,
-                                        )),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: defaultPadding,
-                                        horizontal: defaultPadding),
-                                    elevation: defaultPadding,
+                                return Scaffold(
+                                  resizeToAvoidBottomInset: true,
+                                  body: Center(
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ListView(
-                                        scrollDirection: Axis.vertical,
-                                        clipBehavior: Clip.antiAlias,
-                                        children: snapshot.data ?? [],
-                                      ),
-                                    ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: defaultPadding * 2,
+                                            vertical: defaultPadding * 10),
+                                        child: Card(
+                                          semanticContainer: true,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              side: BorderSide(
+                                                color:
+                                                    primaryColor.withOpacity(0.4),
+                                                width: defaultPadding / 4,
+                                              )),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: defaultPadding,
+                                              horizontal: defaultPadding),
+                                          elevation: defaultPadding,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(
+                                                defaultPadding),
+                                            child: ListView(
+                                              scrollDirection: Axis.vertical,
+                                              clipBehavior: Clip.antiAlias,
+                                              shrinkWrap: true,
+                                              children: snapshot.data ?? [],
+                                            ),
+                                          ),
+                                        )),
                                   ),
                                 );
                               } else {
@@ -243,7 +252,7 @@ class _PostCardBottomState extends State<PostCardBottom> {
   }
 
   Future<List<Widget>> _generateComments(String username) async {
-    List<Comment> comments = [];
+    List<Widget> comments = [];
     for (var comment in widget.comments) {
       bool liked = false;
       List<dynamic> likes =
@@ -264,6 +273,8 @@ class _PostCardBottomState extends State<PostCardBottom> {
         postId: comment['postId'],
       ));
     }
+    comments.add(YourComment(username: username,postid: widget.comments[0]['postId'],userid: widget.userId,));
+    comments.add(Expanded(child: Container()));
     return comments;
   }
 }

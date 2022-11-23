@@ -50,6 +50,9 @@ class _PinScreenState extends State<PinScreen> {
               children: [
                 PinCodeTextField(
                   controller: pinCodeController,
+                  autoFocus: true,
+                  autoUnfocus: true,
+                  keyboardType: TextInputType.number,
                   pinTheme: PinTheme(
                     inactiveColor: primaryColor,
                     shape: PinCodeFieldShape.underline,

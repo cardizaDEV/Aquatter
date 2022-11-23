@@ -12,7 +12,9 @@ class CommentsProvider extends ChangeNotifier {
     List<dynamic> likes = json.decode(response.body);
     return likes;
   }
-  void addLike(String userid, String postid, String username, String commentId) async {
+
+  void addLike(
+      String userid, String postid, String username, String commentId) async {
     await http.post(
         Uri.parse(
             'https://63722218025414c637071928.mockapi.io/Aquatter/users/$userid/posts/$postid/comments/$commentId/likes'),
@@ -20,7 +22,9 @@ class CommentsProvider extends ChangeNotifier {
           'username': username,
         });
   }
-  void removeLike(String userid, String postid, String username, String commentId) async {
+
+  void removeLike(
+      String userid, String postid, String username, String commentId) async {
     var response = await http.get(
       Uri.parse(
           'https://63722218025414c637071928.mockapi.io/Aquatter/users/$userid/posts/$postid/comments/$commentId/likes?username=$username'),
@@ -31,5 +35,15 @@ class CommentsProvider extends ChangeNotifier {
       Uri.parse(
           'https://63722218025414c637071928.mockapi.io/Aquatter/users/$userid/posts/$postid/comments/$commentId/likes/$likeid'),
     );
+  }
+
+  void postComment(String userid, String postid, String username,String comment) async{
+    await http.post(
+        Uri.parse(
+            'https://63722218025414c637071928.mockapi.io/Aquatter/users/$userid/posts/$postid/comments'),
+        body: {
+          'comment' : comment,
+          'username': username,
+        });
   }
 }
