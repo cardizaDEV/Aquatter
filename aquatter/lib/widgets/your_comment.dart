@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class YourComment extends StatefulWidget {
-  const YourComment({super.key, required this.username, required this.userid, required this.postid});
+  const YourComment(
+      {super.key,
+      required this.username,
+      required this.userid,
+      required this.postid});
 
   final String username;
   final String userid;
@@ -98,10 +102,15 @@ class _YourCommentState extends State<YourComment> {
                 ElevatedButton(
                   child: const Text('Comment'),
                   onPressed: () {
-                    _commentController.text.isNotEmpty
-                        ? Provider.of<CommentsProvider>(context, listen: false).postComment(widget.userid, widget.postid, widget.username, _commentController.text)
-                        : _commentController.clear();
-                    _removeCommentArea();
+                    if (_commentController.text.isNotEmpty) {
+                      Provider.of<CommentsProvider>(context, listen: false)
+                          .postComment(widget.userid, widget.postid,
+                              widget.username, _commentController.text);
+                      Navigator.pop(context);
+                    } else {
+                      _commentController.clear();
+                      _removeCommentArea();
+                    }
                     setState(() {});
                   },
                 )

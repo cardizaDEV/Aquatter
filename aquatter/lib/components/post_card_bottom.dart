@@ -274,7 +274,6 @@ class _PostCardBottomState extends State<PostCardBottom> {
       ));
     }
     comments.add(YourComment(username: username,postid: widget.comments[0]['postId'],userid: widget.userId,));
-    comments.add(Expanded(child: Container()));
     return comments;
   }
 }
