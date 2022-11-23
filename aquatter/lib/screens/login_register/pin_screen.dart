@@ -69,6 +69,9 @@ class _PinScreenState extends State<PinScreen> {
                       Provider.of<UserProvider>(context, listen: false)
                           .setUsername(await _getUsername());
                       // ignore: use_build_context_synchronously
+                      Provider.of<UserProvider>(context, listen: false)
+                          .searchForUsers('');
+                      // ignore: use_build_context_synchronously
                       Provider.of<PostsProvider>(context, listen: false)
                           // ignore: use_build_context_synchronously
                           .reloadPosts(Provider.of<UserProvider>(context, listen: false).username);
