@@ -1,38 +1,19 @@
-import 'package:aquatter/providers/user_provider.dart';
 import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class UserCard extends StatefulWidget {
-  const UserCard(
+class TopFollowed extends StatelessWidget {
+  const TopFollowed(
       {super.key,
       required this.image,
       required this.username,
       required this.posts,
-      required this.followers,
-      required this.followed,
-      required this.userId});
+      required this.userId, required this.followers});
 
   final String image;
   final String username;
   final int posts;
   final int followers;
-  final bool followed;
   final String userId;
-
-  @override
-  State<UserCard> createState() =>
-      // ignore: no_logic_in_create_state, unnecessary_this
-      _UserCardState(this.followers, this.followed);
-}
-
-class _UserCardState extends State<UserCard> {
-  // ignore: unused_field, prefer_final_fields
-  int _followers;
-  // ignore: prefer_final_fields
-  bool _followed;
-
-  _UserCardState(this._followers, this._followed);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +25,7 @@ class _UserCardState extends State<UserCard> {
       elevation: defaultPadding,
       child: ListTile(
         leading: CircleAvatar(
-          backgroundImage: NetworkImage(widget.image),
+          backgroundImage: NetworkImage(image),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +34,7 @@ class _UserCardState extends State<UserCard> {
             Flexible(
                 flex: 1,
                 child: Text(
-                  widget.username,
+                  username,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: const TextStyle(
@@ -78,7 +59,7 @@ class _UserCardState extends State<UserCard> {
                       ),
                     ),
                     Text(
-                      widget.posts.toString(),
+                      posts.toString(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: const TextStyle(
@@ -105,7 +86,7 @@ class _UserCardState extends State<UserCard> {
                       ),
                     ),
                     Text(
-                      _followers.toString(),
+                      followers.toString(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: const TextStyle(
@@ -116,45 +97,6 @@ class _UserCardState extends State<UserCard> {
                     )
                   ],
                 ),
-                const SizedBox(
-                  width: defaultPadding,
-                ),
-                ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(
-                          _followed ? primaryBlack : Colors.white),
-                      side: MaterialStatePropertyAll(BorderSide(
-                          color: _followed ? Colors.transparent : primaryBlack,
-                          width: 2)),
-                    ),
-                    onPressed: () async {
-                      if (_followed == true) {
-                        int response = await Provider.of<UserProvider>(context,
-                                listen: false)
-                            .removeFollow(widget.userId);
-                        if (response == 200) {
-                          _followed = false;
-                          _followers--;
-                        }
-                      } else {
-                        int response = await Provider.of<UserProvider>(context,
-                                listen: false)
-                            .addFollow(widget.userId);
-                        if (response == 201) {
-                          _followed = true;
-                          _followers++;
-                        }
-                      }
-                      // ignore: use_build_context_synchronously
-                      Provider.of<UserProvider>(context, listen: false)
-                          .modifyCard(widget.userId, _followers, widget.posts,widget.image,_followed,widget.username);
-                      setState(() {});
-                    },
-                    child: Text(
-                      _followed ? 'Following' : 'Follow',
-                      style: TextStyle(
-                          color: _followed ? Colors.white : primaryBlack),
-                    ))
               ],
             ),
           ],

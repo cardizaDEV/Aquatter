@@ -32,15 +32,19 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
+      appBar: PreferredSize(
+        preferredSize: const Size(defaultPadding, defaultPadding*5),
+        child: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: primaryColor, 
+            statusBarColor: primaryBlack, 
             statusBarIconBrightness: Brightness.dark,
             statusBarBrightness: Brightness.light,
            ),
-          backgroundColor: primaryColor,
-          title: const Center(child: Image(image: AssetImage('lib/media/Aquatter_4.png')))
-        ),
+          backgroundColor: primaryBlack,
+          leading: const Center(child: Image(image: AssetImage('lib/media/Aquatter_4.png'))),
+          leadingWidth: defaultPadding*30,
+        )
+      ),
       bottomNavigationBar: CircleNavBar(
       activeIcons: const [
         Icon(Icons.people, color: Colors.white),
@@ -50,13 +54,14 @@ class _MainScreenState extends State<MainScreen> {
         Icon(Icons.person, color: Colors.white),
       ],
       inactiveIcons: const [
-        Icon(Icons.people, color: Colors.white),
-        Icon(Icons.search, color: Colors.white),
-        Icon(Icons.add, color: Colors.white),
-        Icon(Icons.settings, color: Colors.white),
-        Icon(Icons.person, color: Colors.white),
+        Icon(Icons.people, color: primaryColor),
+        Icon(Icons.search, color: primaryColor),
+        Icon(Icons.add, color: primaryColor),
+        Icon(Icons.settings, color: primaryColor),
+        Icon(Icons.person, color: primaryColor),
       ],
-      color: primaryColor,
+      color: primaryBlack,
+      shadowColor: Colors.black,
       height: 60,
       circleWidth: defaultPadding*6,
       //padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, bottom: defaultPadding),

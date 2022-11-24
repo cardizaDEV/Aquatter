@@ -174,6 +174,7 @@ class _PostCardBottomState extends State<PostCardBottom> {
                                 AsyncSnapshot<List<Widget>> snapshot) {
                               if (snapshot.hasData) {
                                 return Scaffold(
+                                  backgroundColor: Colors.transparent,
                                   resizeToAvoidBottomInset: true,
                                   body: Center(
                                     child: Padding(
@@ -185,11 +186,7 @@ class _PostCardBottomState extends State<PostCardBottom> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(15),
-                                              side: BorderSide(
-                                                color:
-                                                    primaryColor.withOpacity(0.4),
-                                                width: defaultPadding / 4,
-                                              )),
+                                              ),
                                           margin: const EdgeInsets.symmetric(
                                               vertical: defaultPadding,
                                               horizontal: defaultPadding),
@@ -217,11 +214,7 @@ class _PostCardBottomState extends State<PostCardBottom> {
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(15),
-                                            side: BorderSide(
-                                              color:
-                                                  primaryColor.withOpacity(0.4),
-                                              width: defaultPadding / 4,
-                                            )),
+                                            ),
                                         margin: const EdgeInsets.symmetric(
                                             vertical: defaultPadding,
                                             horizontal: defaultPadding),

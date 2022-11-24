@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aquatter/widgets/top_followed.dart';
 import 'package:aquatter/widgets/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -96,23 +97,32 @@ class UserProvider extends ChangeNotifier {
       );
       List<dynamic> posts = users[0]['posts'];
       List<dynamic> followers = users[0]['followers'];
-      bool followed = false;
-      for (var follower in followers) {
-        if (follower['username'] == username) {
-          followed = true;
-        }
-      }
-      return UserCard(
+      return TopFollowed(
           userId: users[0]['id'],
-          followed: followed,
           image: users[0]['avatar'],
           username: users[0]['username'],
-          posts: posts.length,
-          followers: followers.length);
+          followers: followers.length,
+          posts: posts.length);
     } else {
       // ignore: avoid_print
       print('User Request failed with status: ${usersResponse.statusCode}.');
       return Container();
     }
+  }
+
+  void modifyCard(String userId, int followers, int posts, String image,
+      bool followed, String username) {
+    for (var card in userCards) {
+      if (card.userId == userId) {
+        userCards[userCards.indexOf(card)] = UserCard(
+            image: image,
+            username: username,
+            posts: posts,
+            followers: followers,
+            followed: followed,
+            userId: userId);
+      }
+    }
+    notifyListeners();
   }
 }

@@ -85,6 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextField(
                   autocorrect: false,
                   maxLines: 1,
+                  obscureText: true,
                   controller: _passwordController,
                   decoration: InputDecoration(
                       errorText:
@@ -99,6 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextField(
                   autocorrect: false,
                   maxLines: 1,
+                  obscureText: true,
                   controller: _pincodeController,
                   decoration: InputDecoration(
                       errorText: _validationPincode ? null : 'Example: 1234',

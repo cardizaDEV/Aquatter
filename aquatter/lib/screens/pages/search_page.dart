@@ -16,7 +16,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
-    Provider.of<UserProvider>(context, listen: false).searchForUsers('');
+    //Provider.of<UserProvider>(context, listen: false).searchForUsers('');
     super.initState();
   }
 
@@ -24,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-          color: Colors.white,
+          color: primaryBlack,
           image: DecorationImage(
             image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"),
             fit: BoxFit.cover,
@@ -102,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: defaultPadding * 3,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,

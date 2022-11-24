@@ -1,5 +1,6 @@
 import 'package:aquatter/providers/posts_provider.dart';
 import 'package:aquatter/providers/user_provider.dart';
+import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,11 @@ class SocialPage extends StatelessWidget {
     var distance;
     return Container(
         decoration: const BoxDecoration(
-            color: Colors.white,
+            color: primaryBlack,
             image: DecorationImage(
               image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"),
               fit: BoxFit.cover,
-              opacity: 0.2,
+              opacity: 0,
             )),
         child: Consumer<PostsProvider>(builder: (context, provider, child) {
           return GestureDetector(

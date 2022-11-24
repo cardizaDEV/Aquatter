@@ -40,15 +40,7 @@ class _PostCardState extends State<PostCard> {
     String username =
         Provider.of<UserProvider>(context, listen: false).username;
 
-    return Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            image: DecorationImage(
-              image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"),
-              fit: BoxFit.cover,
-              opacity: 0.2,
-            )),
-        child: Padding(
+    return Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height / 10),
             child: InkWell(
@@ -56,10 +48,7 @@ class _PostCardState extends State<PostCard> {
                 semanticContainer: true,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
-                    side: BorderSide(
-                      color: primaryColor.withOpacity(0.4),
-                      width: defaultPadding / 4,
-                    )),
+                ),
                 margin: const EdgeInsets.symmetric(
                     vertical: defaultPadding, horizontal: defaultPadding),
                 elevation: defaultPadding,
@@ -100,6 +89,6 @@ class _PostCardState extends State<PostCard> {
                 }
                 setState(() {});
               },
-            )));
+            ));
   }
 }

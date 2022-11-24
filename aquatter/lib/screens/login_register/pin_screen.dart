@@ -29,9 +29,10 @@ class _PinScreenState extends State<PinScreen> {
           image: DecorationImage(
             image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"),
             fit: BoxFit.cover,
-            opacity: 0.2,
+            opacity: 1,
           )),
       child: Scaffold(
+        backgroundColor: primaryBlack.withOpacity(0.9),
         body: Center(
           child: Card(
             margin: const EdgeInsets.all(defaultPadding * 2),
@@ -51,6 +52,7 @@ class _PinScreenState extends State<PinScreen> {
                 PinCodeTextField(
                   controller: pinCodeController,
                   autoFocus: true,
+                  obscureText: true,
                   autoUnfocus: true,
                   keyboardType: TextInputType.number,
                   pinTheme: PinTheme(

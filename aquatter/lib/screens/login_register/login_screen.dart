@@ -67,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   autocorrect: false,
                   maxLines: 1,
+                  obscureText: true,
                   controller: _passwordController,
                   decoration: InputDecoration(
                       errorText: _validationPassword ? null : 'Wrong password',
