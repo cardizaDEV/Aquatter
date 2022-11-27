@@ -8,16 +8,6 @@ import 'dart:convert' as convert;
 class PostsProvider extends ChangeNotifier {
   List<PostCard> posts = [];
 
-  void addPost(dynamic post) {
-    posts.add(post);
-    notifyListeners();
-  }
-
-  void removePost(dynamic post) {
-    posts.remove(post);
-    notifyListeners();
-  }
-
   void reloadPosts(String username) async {
     posts.clear();
     notifyListeners();

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aquatter/components/my_profile.dart';
 import 'package:aquatter/widgets/top_followed.dart';
 import 'package:aquatter/widgets/user_card.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart' as http;
 class UserProvider extends ChangeNotifier {
   String username = '';
   List<dynamic> posts = [];
+  List<Widget> myPosts = [];
   List<dynamic> follow = [];
   String avatar = '';
   List<UserCard> userCards = [];
@@ -108,6 +110,53 @@ class UserProvider extends ChangeNotifier {
       print('User Request failed with status: ${usersResponse.statusCode}.');
       return Container();
     }
+  }
+
+  Future<Widget> getMyProfile() async {
+    final usersResponse = await http.get(Uri.parse(
+        'https://63722218025414c637071928.mockapi.io/Aquatter/users'));
+    if (usersResponse.statusCode == 200) {
+      List<dynamic> users = json.decode(usersResponse.body);
+      for (var user in users) {
+        if (user['username'] == username) {
+          List<dynamic> posts = user['posts'];
+          List<dynamic> followers = user['followers'];
+          return MyProfile(
+            avatar: user['avatar'],
+            username: username,
+            followers: followers.length,
+            posts: posts.length,
+            following: await getFollowing(),
+            myposts: posts,
+          );
+        }
+      }
+      return Container();
+    } else {
+      // ignore: avoid_print
+      print('User Request failed with status: ${usersResponse.statusCode}.');
+      return Container();
+    }
+  }
+
+  Future<int> getFollowing() async {
+    int following = 0;
+    final usersResponse = await http.get(Uri.parse(
+        'https://63722218025414c637071928.mockapi.io/Aquatter/users'));
+    if (usersResponse.statusCode == 200) {
+      List<dynamic> users = json.decode(usersResponse.body);
+      for (var user in users) {
+        List<dynamic> followers = user['followers'];
+        for (var follower in followers) {
+          follower['username'] == username ? following++ : null;
+        }
+      }
+    } else {
+      // ignore: avoid_print
+      print('User Request failed with status: ${usersResponse.statusCode}.');
+      return 0;
+    }
+    return following;
   }
 
   void modifyCard(String userId, int followers, int posts, String image,
