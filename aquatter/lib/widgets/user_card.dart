@@ -52,16 +52,44 @@ class _UserCardState extends State<UserCard> {
           children: [
             Flexible(
                 flex: 1,
-                child: Text(
-                  widget.username,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: defaultPadding * 2,
-                    fontWeight: FontWeight.bold,
+                child: InkWell(
+                  child: Text(
+                    widget.username,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: defaultPadding * 2,
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).size.height / 10),
+                          child: Card(
+                            color: primaryBlack,
+                              elevation: defaultPadding,
+                              child: FutureBuilder(
+                                future: Provider.of<UserProvider>(context)
+                                    .getProfile(widget.username),
+                                builder:
+                                    (context, AsyncSnapshot<Widget> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return snapshot.data ?? Container();
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              )),
+                        );
+                      },
+                    );
+                  },
                 )),
             Row(
               children: [
@@ -147,7 +175,8 @@ class _UserCardState extends State<UserCard> {
                       }
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
-                          .modifyCard(widget.userId, _followers, widget.posts,widget.image,_followed,widget.username);
+                          .modifyCard(widget.userId, _followers, widget.posts,
+                              widget.image, _followed, widget.username);
                       setState(() {});
                     },
                     child: Text(

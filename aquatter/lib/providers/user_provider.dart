@@ -112,7 +112,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<Widget> getMyProfile() async {
+  Future<Widget> getProfile(String username) async {
     final usersResponse = await http.get(Uri.parse(
         'https://63722218025414c637071928.mockapi.io/Aquatter/users'));
     if (usersResponse.statusCode == 200) {
@@ -126,7 +126,7 @@ class UserProvider extends ChangeNotifier {
             username: username,
             followers: followers.length,
             posts: posts.length,
-            following: await getFollowing(),
+            following: await getFollowing(username),
             myposts: posts,
           );
         }
@@ -139,7 +139,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<int> getFollowing() async {
+  Future<int> getFollowing(String username) async {
     int following = 0;
     final usersResponse = await http.get(Uri.parse(
         'https://63722218025414c637071928.mockapi.io/Aquatter/users'));
