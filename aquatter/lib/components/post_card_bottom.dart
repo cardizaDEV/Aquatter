@@ -15,10 +15,11 @@ class PostCardBottom extends StatefulWidget {
       required this.user,
       required this.title,
       required this.comments,
-      required this.userId});
+      required this.userId, required this.postId});
 
   final int likes;
   final List<dynamic> comments;
+  final String postId;
   final bool liked;
   final String user;
   final String userId;
@@ -184,9 +185,9 @@ class _PostCardBottomState extends State<PostCardBottom> {
                                         child: Card(
                                           semanticContainer: true,
                                           shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              ),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
                                           margin: const EdgeInsets.symmetric(
                                               vertical: defaultPadding,
                                               horizontal: defaultPadding),
@@ -212,9 +213,9 @@ class _PostCardBottomState extends State<PostCardBottom> {
                                     child: Card(
                                         semanticContainer: true,
                                         shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            ),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
                                         margin: const EdgeInsets.symmetric(
                                             vertical: defaultPadding,
                                             horizontal: defaultPadding),
@@ -246,27 +247,33 @@ class _PostCardBottomState extends State<PostCardBottom> {
 
   Future<List<Widget>> _generateComments(String username) async {
     List<Widget> comments = [];
-    for (var comment in widget.comments) {
-      bool liked = false;
-      List<dynamic> likes =
-          await Provider.of<CommentsProvider>(context, listen: false)
-              .getCommentLikes(widget.userId, comment['postId'], comment['id']);
-      for (var like in likes) {
-        if (like['username'] == username) {
-          liked = true;
+    if (widget.comments.isNotEmpty) {
+      for (var comment in widget.comments) {
+        bool liked = false;
+        List<dynamic> likes = await Provider.of<CommentsProvider>(context,
+                listen: false)
+            .getCommentLikes(widget.userId, comment['postId'], comment['id']);
+        for (var like in likes) {
+          if (like['username'] == username) {
+            liked = true;
+          }
         }
+        comments.add(Comment(
+          user: comment['username'],
+          userId: widget.userId,
+          comment: comment['comment'],
+          liked: liked,
+          likes: likes.length,
+          commentId: comment['id'],
+          postId: comment['postId'],
+        ));
       }
-      comments.add(Comment(
-        user: comment['username'],
-        userId: widget.userId,
-        comment: comment['comment'],
-        liked: liked,
-        likes: likes.length,
-        commentId: comment['id'],
-        postId: comment['postId'],
-      ));
     }
-    comments.add(YourComment(username: username,postid: widget.comments[0]['postId'],userid: widget.userId,));
+    comments.add(YourComment(
+      username: username,
+      postid: widget.postId,
+      userid: widget.userId,
+    ));
     return comments;
   }
 }

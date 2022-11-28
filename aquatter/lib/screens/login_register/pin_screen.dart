@@ -68,15 +68,22 @@ class _PinScreenState extends State<PinScreen> {
                   length: 4,
                   onCompleted: (value) async {
                     if (await _isTheRealPincode(value) == true) {
+                      String username = await _getUsername();
+                      // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
-                          .setUsername(await _getUsername());
+                          .setUsername(username);
+                      // ignore: use_build_context_synchronously
+                      Provider.of<UserProvider>(context, listen: false)
+                          .getUserId(username);
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
                           .searchForUsers('');
                       // ignore: use_build_context_synchronously
                       Provider.of<PostsProvider>(context, listen: false)
-                          // ignore: use_build_context_synchronously
-                          .reloadPosts(Provider.of<UserProvider>(context, listen: false).username);
+                          .reloadPosts(
+                              // ignore: use_build_context_synchronously
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .username);
                       // ignore: use_build_context_synchronously
                       Navigator.pushReplacementNamed(context, 'MainScreen');
                     } else {

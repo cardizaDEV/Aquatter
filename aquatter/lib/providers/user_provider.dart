@@ -4,9 +4,11 @@ import 'package:aquatter/widgets/top_followed.dart';
 import 'package:aquatter/widgets/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class UserProvider extends ChangeNotifier {
   String username = '';
+  String userId = '';
   List<dynamic> posts = [];
   List<Widget> myPosts = [];
   List<dynamic> follow = [];
@@ -174,5 +176,21 @@ class UserProvider extends ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  void getUserId(String username) async {
+    final response = await http.get(Uri.parse(
+        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
+      for (var element in jsonResponse) {
+        if (element['username'] == username) {
+          userId = element['id'];
+        }
+      }
+    } else {
+      // ignore: avoid_print
+      print('Request failed with status: ${response.statusCode}.');
+    }
   }
 }

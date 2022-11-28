@@ -1,4 +1,5 @@
 import 'package:aquatter/providers/comments_provider.dart';
+import 'package:aquatter/providers/image_picker_provider.dart';
 import 'package:aquatter/providers/posts_provider.dart';
 import 'package:aquatter/providers/user_provider.dart';
 import 'package:aquatter/router/routing.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
           ChangeNotifierProvider<PostsProvider>(create: (_) => PostsProvider()),
+          ChangeNotifierProvider<ImagePickerProvider>(create: (_) => ImagePickerProvider()),
           ChangeNotifierProvider<CommentsProvider>(create: (_) => CommentsProvider()),
         ],
         child: MaterialApp(

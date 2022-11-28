@@ -101,6 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   autocorrect: false,
                   maxLines: 1,
                   obscureText: true,
+                  keyboardType: TextInputType.number,
                   controller: _pincodeController,
                   decoration: InputDecoration(
                       errorText: _validationPincode ? null : 'Example: 1234',

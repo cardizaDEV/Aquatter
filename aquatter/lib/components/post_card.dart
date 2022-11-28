@@ -20,7 +20,7 @@ class PostCard extends StatefulWidget {
   final String userId;
   final String id;
   final String title;
-  final String image;
+  final Image image;
   final bool liked;
   final List<dynamic> likes;
   final List<dynamic> comments;
@@ -57,12 +57,11 @@ class _PostCardState extends State<PostCard> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image(
-                          fit: BoxFit.fitHeight,
-                          image: NetworkImage(widget.image)),
+                      widget.image,
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: PostCardBottom(
+                          postId: widget.id,
                           userId: widget.userId,
                           comments: widget.comments,
                           title: widget.title,
