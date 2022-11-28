@@ -2,7 +2,7 @@ import 'package:aquatter/themes/constants.dart';
 import 'package:aquatter/widgets/my_post.dart';
 import 'package:flutter/material.dart';
 
-class MyProfile extends StatelessWidget {
+class MyProfile extends StatefulWidget {
   const MyProfile(
       {super.key,
       required this.avatar,
@@ -10,14 +10,22 @@ class MyProfile extends StatelessWidget {
       required this.followers,
       required this.posts,
       required this.following,
-      required this.myposts});
+      required this.myposts, required this.description});
 
   final String avatar;
   final int followers;
   final int following;
   final int posts;
   final String username;
+  final String description;
   final List<dynamic> myposts;
+
+  @override
+  State<MyProfile> createState() => _MyProfileState();
+}
+
+class _MyProfileState extends State<MyProfile> {
+  int lines = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +43,7 @@ class MyProfile extends StatelessWidget {
                   width: defaultPadding,
                 ),
                 CircleAvatar(
-                  backgroundImage: NetworkImage(avatar),
+                  backgroundImage: NetworkImage(widget.avatar),
                   minRadius: defaultPadding * 6,
                 ),
                 Expanded(
@@ -57,7 +65,7 @@ class MyProfile extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            posts.toString(),
+                            widget.posts.toString(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: const TextStyle(
@@ -81,7 +89,7 @@ class MyProfile extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            followers.toString(),
+                            widget.followers.toString(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: const TextStyle(
@@ -105,7 +113,7 @@ class MyProfile extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            following.toString(),
+                            widget.following.toString(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: const TextStyle(
@@ -126,7 +134,7 @@ class MyProfile extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    username,
+                    widget.username,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: const TextStyle(
@@ -137,13 +145,34 @@ class MyProfile extends StatelessWidget {
                     ),
                   ),
                 )),
-            const SizedBox(
-              height: defaultPadding * 2,
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(defaultPadding),
+                child: Text(
+                  widget.description,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: lines,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                      shadows: <Shadow>[
+                        Shadow(
+                          //offset: Offset(0.0, 0.0),
+                          blurRadius: defaultPadding * 4,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ]),
+                ),
+              ),
+              onTap: () {
+                lines == 20 ? lines = 1 : lines = 20;
+                setState(() {});
+              },
             ),
-            myposts.isNotEmpty
+            widget.myposts.isNotEmpty
                 ? Flexible(
-                  flex: 6,
-                  fit: FlexFit.loose,
+                    flex: 6,
+                    fit: FlexFit.loose,
                     child: GridView(
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -154,24 +183,25 @@ class MyProfile extends StatelessWidget {
                         children: getMyPosts()))
                 : const Flexible(
                     flex: 1,
-                    child: Text(
-                      'You have not posted yet',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: defaultPadding * 3,
-                        fontWeight: FontWeight.bold,
+                    child: Padding(
+                      padding: EdgeInsets.all(defaultPadding),
+                      child: Text(
+                        'You have not posted yet',
                         overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: defaultPadding * 3,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     )),
           ]),
     );
-  }
-
-  List<Widget> getMyPosts() {
+  }  List<Widget> getMyPosts() {
     List<Widget> posts = [];
-    for (var post in myposts) {
+    for (var post in widget.myposts) {
       posts.add(MyPost(post: post));
     }
     return posts;

@@ -124,6 +124,7 @@ class UserProvider extends ChangeNotifier {
           return MyProfile(
             avatar: user['avatar'],
             username: username,
+            description: user['description'],
             followers: followers.length,
             posts: posts.length,
             following: await getFollowing(username),
