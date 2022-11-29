@@ -23,9 +23,9 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           color: primaryBlack,
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"),
             fit: BoxFit.cover,
             opacity: 0.2,

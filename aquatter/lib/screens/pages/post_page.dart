@@ -81,21 +81,21 @@ class _PostPageState extends State<PostPage> {
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                             filled: true,
                             fillColor: primaryBlack,
-                            labelStyle: TextStyle(color: Colors.white),
+                            labelStyle: const TextStyle(color: Colors.white),
                             floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
                             labelText: 'Title'),
                       ),
                     ),
                     Center(
                       child: ElevatedButton(
-                          style: const ButtonStyle(
+                          style: ButtonStyle(
                             backgroundColor:
                                 MaterialStatePropertyAll(primaryBlack),
-                            side: MaterialStatePropertyAll(
+                            side: const MaterialStatePropertyAll(
                                 BorderSide(color: Colors.white, width: 2)),
                           ),
                           onPressed: () async {

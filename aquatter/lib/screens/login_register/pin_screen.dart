@@ -70,7 +70,7 @@ class _PinScreenState extends State<PinScreen> {
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
                           // ignore: use_build_context_synchronously
-                          .getUserId(
+                          .getUserData(
                               // ignore: use_build_context_synchronously
                               Provider.of<UserProvider>(context, listen: false)
                                   .username);

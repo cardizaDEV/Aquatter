@@ -17,9 +17,9 @@ class SocialPage extends StatelessWidget {
     // ignore: prefer_typing_uninitialized_variables
     var distance;
     return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             color: primaryBlack,
-            image: DecorationImage(
+            image: const DecorationImage(
               image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"),
               fit: BoxFit.cover,
               opacity: 0,

@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: PreferredSize(
           preferredSize: const Size(defaultPadding, defaultPadding * 5),
           child: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
+            systemOverlayStyle: SystemUiOverlayStyle(
               statusBarColor: primaryBlack,
               statusBarIconBrightness: Brightness.dark,
               statusBarBrightness: Brightness.light,
@@ -53,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
           Icon(Icons.settings, color: Colors.white),
           Icon(Icons.person, color: Colors.white),
         ],
-        inactiveIcons: const [
+        inactiveIcons: [
           Icon(Icons.people, color: primaryColor),
           Icon(Icons.search, color: primaryColor),
           Icon(Icons.add, color: primaryColor),
@@ -82,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
           SocialPage(),
           SearchPage(),
           PostPage(),
-          Settings(),
+          SettingsPage(),
           ProfilePage()
         ],
       ),

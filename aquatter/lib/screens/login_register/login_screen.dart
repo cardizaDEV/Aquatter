@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           .setLoged(_usernameController.text);
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
-                          .getUserId(_usernameController.text);
+                          .getUserData(_usernameController.text);
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
                           .searchForUsers('');

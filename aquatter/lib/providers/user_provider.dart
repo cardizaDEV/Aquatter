@@ -16,6 +16,7 @@ class UserProvider extends ChangeNotifier {
   List<dynamic> follow = [];
   String avatar = '';
   List<UserCard> userCards = [];
+  String description = '';
 
   ///Adds a follower
   Future<int> addFollow(String userid) async {
@@ -172,8 +173,8 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ///Returns the user id and updates the provider userId
-  void getUserId(String username) async {
+  ///Returns the user id,avatar and description and updates the provider
+  void getUserData(String username) async {
     final response = await http.get(Uri.parse(
         'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
     if (response.statusCode == 200) {
@@ -181,6 +182,8 @@ class UserProvider extends ChangeNotifier {
       for (var element in jsonResponse) {
         if (element['username'] == username) {
           userId = element['id'];
+          description = element['description'];
+          avatar = element['avatar'];
         }
       }
     } else {
@@ -191,7 +194,6 @@ class UserProvider extends ChangeNotifier {
 
   ///Saves the username in shared and updates the provider username
   Future<bool> setLoged(String username) async {
-    await Future.delayed(const Duration(seconds: 2));
     // ignore: no_leading_underscores_for_local_identifiers
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     SharedPreferences prefs = await _prefs;
@@ -202,7 +204,6 @@ class UserProvider extends ChangeNotifier {
 
   ///Returns the username from shared and updates the provider username
   Future<String> getUsername() async {
-    await Future.delayed(const Duration(seconds: 2));
     // ignore: no_leading_underscores_for_local_identifiers
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     SharedPreferences prefs = await _prefs;
@@ -290,5 +291,20 @@ class UserProvider extends ChangeNotifier {
     } else {
       return false;
     }
+  }
+
+  Future<int> changeDescription(String description) async {
+    final response = await http.put(
+      Uri.parse(
+          'https://63722218025414c637071928.mockapi.io/Aquatter/users/$userId'),
+      body: {
+        'description': description,
+      }
+    );
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      this.description = description;
+      notifyListeners();
+    }
+    return response.statusCode;
   }
 }

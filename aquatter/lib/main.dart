@@ -24,8 +24,10 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
           ChangeNotifierProvider<PostsProvider>(create: (_) => PostsProvider()),
-          ChangeNotifierProvider<ImagePickerProvider>(create: (_) => ImagePickerProvider()),
-          ChangeNotifierProvider<CommentsProvider>(create: (_) => CommentsProvider()),
+          ChangeNotifierProvider<ImagePickerProvider>(
+              create: (_) => ImagePickerProvider()),
+          ChangeNotifierProvider<CommentsProvider>(
+              create: (_) => CommentsProvider()),
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
