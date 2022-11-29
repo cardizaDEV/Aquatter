@@ -45,7 +45,6 @@ dependencies:
   email_validator: ^2.1.17
   provider: ^6.0.4
   image_picker: ^0.8.6
-  flutter_image_compress: ^1.1.3
   
 dev_dependencies:
   flutter_test:
@@ -70,8 +69,6 @@ flutter:
     - lib/media/Aquatter_2.png
     - lib/media/Aquatter_3.png
     - lib/media/Aquatter_4.png
-    - lib/media/white_star.png
-    - lib/media/yellow_star.png
 
 
 

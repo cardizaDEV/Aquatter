@@ -16,49 +16,51 @@ class FirstScreen extends StatelessWidget {
               opacity: 1,
             )),
         child: Scaffold(
+            backgroundColor: primaryBlack.withOpacity(0.9),
             body: Padding(
-          padding: const EdgeInsets.symmetric(
-              vertical: defaultPadding * 10, horizontal: defaultPadding * 4),
-          child: Center(
-            child: Card(
-              color: Colors.white.withOpacity(1),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.only(
-                    right: screenHeight / 12,
-                    left: screenHeight / 12,
-                    top: screenHeight / 16,
-                    bottom: screenHeight / 16),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                children: [
-                  const Image(
-                    fit: BoxFit.cover,
-                    image: AssetImage("lib/media/Aquatter.png"),
-                  ),
-                  ListView(
+              padding: const EdgeInsets.symmetric(
+                  vertical: defaultPadding * 10,
+                  horizontal: defaultPadding * 4),
+              child: Center(
+                child: Card(
+                  color: Colors.white.withOpacity(1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  child: ListView(
                     physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(
+                        right: screenHeight / 12,
+                        left: screenHeight / 12,
+                        top: screenHeight / 16,
+                        bottom: screenHeight / 16),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     children: [
-                      ElevatedButton(
-                        child: const Text('Login'),
-                        onPressed: () => Navigator.pushReplacementNamed(
-                            context, 'LoginScreen'),
+                      const Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage("lib/media/Aquatter.png"),
                       ),
-                      ElevatedButton(
-                        child: const Text('Register'),
-                        onPressed: () => Navigator.pushReplacementNamed(
-                            context, 'RegisterScreen'),
-                      ),
+                      ListView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        children: [
+                          ElevatedButton(
+                            child: const Text('Login'),
+                            onPressed: () => Navigator.pushReplacementNamed(
+                                context, 'LoginScreen'),
+                          ),
+                          ElevatedButton(
+                            child: const Text('Register'),
+                            onPressed: () => Navigator.pushReplacementNamed(
+                                context, 'RegisterScreen'),
+                          ),
+                        ],
+                      )
                     ],
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
-          ),
-        )));
+            )));
   }
 }

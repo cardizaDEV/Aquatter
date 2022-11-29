@@ -1,7 +1,7 @@
+import 'package:aquatter/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../themes/constants.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -20,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _passwordController = TextEditingController();
   // ignore: prefer_final_fields
   TextEditingController _pincodeController = TextEditingController();
+  // ignore: prefer_final_fields
   String _usernameError = 'Example: myUsername';
   bool _validationEmail = true;
   bool _validationUsername = true;
@@ -35,9 +36,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           image: DecorationImage(
             image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"),
             fit: BoxFit.cover,
-            opacity: 0.2,
+            opacity: 1,
           )),
       child: Scaffold(
+        backgroundColor: primaryBlack.withOpacity(0.9),
         body: Center(
           child: Card(
             margin: const EdgeInsets.all(defaultPadding * 2),
@@ -124,26 +126,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           : _validationPassword = true;
                       setState(() {});
                       _usernameController.text.isEmpty ||
-                              await _usernameExisting(
-                                      _usernameController.text) ==
+                              await Provider.of<UserProvider>(context, listen: false)
+                                      .usernameExisting(
+                                          _usernameController.text) ==
                                   true
                           ? _validationUsername = false
                           : _validationUsername = true;
                       setState(() {});
                       _pincodeController.text.isEmpty ||
-                              _pincodeController.text.length != 4 || isNumeric(_pincodeController.text) == false
+                              _pincodeController.text.length != 4 ||
+                              isNumeric(_pincodeController.text) == false
                           ? _validationPincode = false
                           : _validationPincode = true;
                       setState(() {});
-                      _emailController.text.isEmpty || !(EmailValidator.validate(_emailController.text))
+                      _emailController.text.isEmpty ||
+                              !(EmailValidator.validate(_emailController.text))
                           ? _validationEmail = false
-                          : _validationEmail = true; 
+                          : _validationEmail = true;
                       setState(() {});
                       if (_validationEmail == true &&
                           _validationUsername == true &&
                           _validationPassword == true &&
                           _validationPincode == true) {
-                        await _registerUser(
+                        // ignore: use_build_context_synchronously
+                        await Provider.of<UserProvider>(context, listen: false).registerUser(
                             _usernameController.text,
                             _emailController.text,
                             _passwordController.text,
@@ -163,44 +169,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
-  }
-
-  Future<bool> _registerUser(
-      String username, String email, String password, String pincode) async {
-    final data = {
-      'email': email,
-      'password': password,
-      'pincode': pincode,
-      'username': username,
-    };
-    final response = await http.post(
-      Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/users/'),
-      body: data,
-    );
-    if (response.statusCode == 201) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Future<bool> _usernameExisting(String username) async {
-    bool result = false;
-    final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
-    if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
-      for (var element in jsonResponse) {
-        if (element['username'] == username) {
-          _usernameError = 'The user already exists.';
-          result = true;
-        }
-      }
-    } else {
-      // ignore: avoid_print
-      print('Request failed with status: ${response.statusCode}.');
-    }
-    return result;
   }
 
   bool isNumeric(String s) {

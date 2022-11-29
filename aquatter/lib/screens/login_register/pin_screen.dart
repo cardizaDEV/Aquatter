@@ -2,10 +2,7 @@ import 'package:aquatter/providers/posts_provider.dart';
 import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../providers/user_provider.dart';
 
@@ -67,14 +64,16 @@ class _PinScreenState extends State<PinScreen> {
                   appContext: context,
                   length: 4,
                   onCompleted: (value) async {
-                    if (await _isTheRealPincode(value) == true) {
-                      String username = await _getUsername();
+                    if (await Provider.of<UserProvider>(context, listen: false)
+                            .isTheRealPincode(value) ==
+                        true) {
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
-                          .setUsername(username);
-                      // ignore: use_build_context_synchronously
-                      Provider.of<UserProvider>(context, listen: false)
-                          .getUserId(username);
+                          // ignore: use_build_context_synchronously
+                          .getUserId(
+                              // ignore: use_build_context_synchronously
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .username);
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
                           .searchForUsers('');
@@ -110,34 +109,5 @@ class _PinScreenState extends State<PinScreen> {
         ),
       ),
     );
-  }
-
-  Future<bool> _isTheRealPincode(String pinCode) async {
-    bool result = false;
-    String username = await _getUsername();
-    final usersResponse = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
-    if (usersResponse.statusCode == 200) {
-      var usersList = convert.jsonDecode(usersResponse.body) as List<dynamic>;
-      for (var element in usersList) {
-        if (element['username'] == username) {
-          if (element['pincode'] == pinCode) {
-            return true;
-          }
-        }
-      }
-    } else {
-      // ignore: avoid_print
-      print('Request failed with status: ${usersResponse.statusCode}.');
-    }
-    return result;
-  }
-
-  Future<String> _getUsername() async {
-    await Future.delayed(const Duration(seconds: 2));
-    // ignore: no_leading_underscores_for_local_identifiers
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    SharedPreferences prefs = await _prefs;
-    return prefs.getString('username') ?? '';
   }
 }

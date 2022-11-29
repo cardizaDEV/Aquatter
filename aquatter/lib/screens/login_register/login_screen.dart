@@ -2,10 +2,7 @@ import 'package:aquatter/providers/posts_provider.dart';
 import 'package:aquatter/providers/user_provider.dart';
 import 'package:aquatter/themes/constants.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,9 +28,10 @@ class _LoginScreenState extends State<LoginScreen> {
           image: DecorationImage(
             image: AssetImage("lib/media/hatching-ge35f10e1a_1280.png"),
             fit: BoxFit.cover,
-            opacity: 0.2,
+            opacity: 1,
           )),
       child: Scaffold(
+        backgroundColor: primaryBlack.withOpacity(0.9),
         body: Center(
           child: Card(
             margin: const EdgeInsets.all(defaultPadding * 2),
@@ -82,24 +80,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text('Login'),
                   onPressed: () async {
                     _passwordController.text.isEmpty ||
-                            await _isTheRealPassword(_usernameController.text,
-                                    _passwordController.text) ==
+                            await Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .isTheRealPassword(_usernameController.text,
+                                        _passwordController.text) ==
                                 false
                         ? _validationPassword = false
                         : _validationPassword = true;
                     setState(() {});
                     _usernameController.text.isEmpty ||
-                            await _usernameExisting(_usernameController.text) ==
+                            // ignore: use_build_context_synchronously
+                            await Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .usernameExisting(
+                                        _usernameController.text) ==
                                 false
                         ? _validationUsername = false
                         : _validationUsername = true;
                     setState(() {});
                     if (_validationPassword == true &&
                         _validationUsername == true) {
-                      await _setLoged(_usernameController.text);
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
-                          .setUsername(_usernameController.text);
+                          .setLoged(_usernameController.text);
                       // ignore: use_build_context_synchronously
                       Provider.of<UserProvider>(context, listen: false)
                           .getUserId(_usernameController.text);
@@ -108,8 +111,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           .searchForUsers('');
                       // ignore: use_build_context_synchronously
                       Provider.of<PostsProvider>(context, listen: false)
-                          // ignore: use_build_context_synchronously
-                          .reloadPosts(Provider.of<UserProvider>(context, listen: false).username);
+                          .reloadPosts(
+                              // ignore: use_build_context_synchronously
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .username);
                       await
                           // ignore: use_build_context_synchronously
                           Navigator.pushReplacementNamed(context, 'MainScreen');
@@ -127,52 +132,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  Future<bool> _usernameExisting(String username) async {
-    bool result = false;
-    final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
-    if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
-      for (var element in jsonResponse) {
-        if (element['username'] == username) {
-          result = true;
-        }
-      }
-    } else {
-      // ignore: avoid_print
-      print('Request failed with status: ${response.statusCode}.');
-    }
-    return result;
-  }
-
-  Future<bool> _isTheRealPassword(String username, String password) async {
-    bool result = false;
-    final response = await http.get(Uri.parse(
-        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
-    if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
-      for (var element in jsonResponse) {
-        if (element['username'] == username) {
-          if (element['password'] == password) {
-            result = true;
-          }
-        }
-      }
-    } else {
-      // ignore: avoid_print
-      print('Request failed with status: ${response.statusCode}.');
-    }
-    return result;
-  }
-
-  Future<bool> _setLoged(String username) async {
-    await Future.delayed(const Duration(seconds: 2));
-    // ignore: no_leading_underscores_for_local_identifiers
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    SharedPreferences prefs = await _prefs;
-    await prefs.setString('username', username);
-    return true;
   }
 }

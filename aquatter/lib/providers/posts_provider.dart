@@ -9,6 +9,7 @@ import 'dart:convert' as convert;
 class PostsProvider extends ChangeNotifier {
   List<PostCard> posts = [];
 
+  ///Loads all posts ordered by post date
   void reloadPosts(String username) async {
     posts.clear();
     notifyListeners();
@@ -80,6 +81,7 @@ class PostsProvider extends ChangeNotifier {
     }
   }
 
+  ///Adds a like to a post
   void addLike(String userid, String postid, String username) async {
     await http.post(
         Uri.parse(
@@ -89,6 +91,7 @@ class PostsProvider extends ChangeNotifier {
         });
   }
 
+  ///Removes a like from a post
   void removeLike(String userid, String postid, String username) async {
     var response = await http.get(
       Uri.parse(
@@ -102,6 +105,7 @@ class PostsProvider extends ChangeNotifier {
     );
   }
 
+  ///Post a new post
   Future<String> addPost(String userid, File image, String title) async {
     DateTime now = DateTime.now();
     final response = await http.post(

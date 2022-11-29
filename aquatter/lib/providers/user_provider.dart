@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class UserProvider extends ChangeNotifier {
   String username = '';
   String userId = '';
@@ -15,21 +17,7 @@ class UserProvider extends ChangeNotifier {
   String avatar = '';
   List<UserCard> userCards = [];
 
-  void setUsername(String username) {
-    this.username = username;
-    notifyListeners();
-  }
-
-  void addPost(dynamic post) {
-    posts.add(post);
-    notifyListeners();
-  }
-
-  void removePost(dynamic post) {
-    posts.remove(post);
-    notifyListeners();
-  }
-
+  ///Adds a follower
   Future<int> addFollow(String userid) async {
     var response = await http.post(
         Uri.parse(
@@ -40,6 +28,7 @@ class UserProvider extends ChangeNotifier {
     return response.statusCode;
   }
 
+  ///Removes a follower
   Future<int> removeFollow(String userid) async {
     var response = await http.get(
       Uri.parse(
@@ -54,6 +43,7 @@ class UserProvider extends ChangeNotifier {
     return response.statusCode;
   }
 
+  ///Loads all the user cards filtered by username
   void searchForUsers(String username) async {
     userCards.clear();
     notifyListeners();
@@ -87,6 +77,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  ///Returns the card of the most followed user
   Future<Widget> getMostFollowed() async {
     final usersResponse = await http.get(Uri.parse(
         'https://63722218025414c637071928.mockapi.io/Aquatter/users'));
@@ -114,6 +105,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  ///Returns a user profile
   Future<Widget> getProfile(String username) async {
     final usersResponse = await http.get(Uri.parse(
         'https://63722218025414c637071928.mockapi.io/Aquatter/users'));
@@ -142,6 +134,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  ///Returns the number of followers
   Future<int> getFollowing(String username) async {
     int following = 0;
     final usersResponse = await http.get(Uri.parse(
@@ -162,6 +155,7 @@ class UserProvider extends ChangeNotifier {
     return following;
   }
 
+  ///Updates the data of a user card
   void modifyCard(String userId, int followers, int posts, String image,
       bool followed, String username) {
     for (var card in userCards) {
@@ -178,6 +172,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///Returns the user id and updates the provider userId
   void getUserId(String username) async {
     final response = await http.get(Uri.parse(
         'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
@@ -191,6 +186,109 @@ class UserProvider extends ChangeNotifier {
     } else {
       // ignore: avoid_print
       print('Request failed with status: ${response.statusCode}.');
+    }
+  }
+
+  ///Saves the username in shared and updates the provider username
+  Future<bool> setLoged(String username) async {
+    await Future.delayed(const Duration(seconds: 2));
+    // ignore: no_leading_underscores_for_local_identifiers
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    SharedPreferences prefs = await _prefs;
+    await prefs.setString('username', username);
+    this.username = username;
+    return true;
+  }
+
+  ///Returns the username from shared and updates the provider username
+  Future<String> getUsername() async {
+    await Future.delayed(const Duration(seconds: 2));
+    // ignore: no_leading_underscores_for_local_identifiers
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    SharedPreferences prefs = await _prefs;
+    username = prefs.getString('username') ?? '';
+    return username;
+  }
+
+  ///Checks if the pin code is correct
+  Future<bool> isTheRealPincode(String pinCode) async {
+    bool result = false;
+    String username = await getUsername();
+    final usersResponse = await http.get(Uri.parse(
+        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+    if (usersResponse.statusCode == 200) {
+      var usersList = convert.jsonDecode(usersResponse.body) as List<dynamic>;
+      for (var element in usersList) {
+        if (element['username'] == username) {
+          if (element['pincode'] == pinCode) {
+            return true;
+          }
+        }
+      }
+    } else {
+      // ignore: avoid_print
+      print('Request failed with status: ${usersResponse.statusCode}.');
+    }
+    return result;
+  }
+
+  ///Checks if the username is already existing
+  Future<bool> usernameExisting(String username) async {
+    bool result = false;
+    final response = await http.get(Uri.parse(
+        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
+      for (var element in jsonResponse) {
+        if (element['username'] == username) {
+          result = true;
+        }
+      }
+    } else {
+      // ignore: avoid_print
+      print('Request failed with status: ${response.statusCode}.');
+    }
+    return result;
+  }
+
+  //////Checks if the password is correct
+  Future<bool> isTheRealPassword(String username, String password) async {
+    bool result = false;
+    final response = await http.get(Uri.parse(
+        'https://63722218025414c637071928.mockapi.io/Aquatter/users?username=$username'));
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
+      for (var element in jsonResponse) {
+        if (element['username'] == username) {
+          if (element['password'] == password) {
+            result = true;
+          }
+        }
+      }
+    } else {
+      // ignore: avoid_print
+      print('Request failed with status: ${response.statusCode}.');
+    }
+    return result;
+  }
+
+  ///Registers a new user
+  Future<bool> registerUser(
+      String username, String email, String password, String pincode) async {
+    final data = {
+      'email': email,
+      'password': password,
+      'pincode': pincode,
+      'username': username,
+    };
+    final response = await http.post(
+      Uri.parse('https://63722218025414c637071928.mockapi.io/Aquatter/users/'),
+      body: data,
+    );
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

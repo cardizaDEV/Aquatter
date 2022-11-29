@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CommentsProvider extends ChangeNotifier {
+
+  ///Returns a list of likes
   Future<List<dynamic>> getCommentLikes(
       String userid, String postid, String commentId) async {
     var response = await http.get(
@@ -13,6 +15,7 @@ class CommentsProvider extends ChangeNotifier {
     return likes;
   }
 
+  ///Adds a like to a comment
   void addLike(
       String userid, String postid, String username, String commentId) async {
     await http.post(
@@ -23,6 +26,8 @@ class CommentsProvider extends ChangeNotifier {
         });
   }
 
+
+  ///Removes a like from a comment
   void removeLike(
       String userid, String postid, String username, String commentId) async {
     var response = await http.get(
@@ -37,6 +42,7 @@ class CommentsProvider extends ChangeNotifier {
     );
   }
 
+  //Post a new comment
   void postComment(String userid, String postid, String username,String comment) async{
     await http.post(
         Uri.parse(

@@ -19,12 +19,6 @@ class _PostPageState extends State<PostPage> {
   TextEditingController _titleController = TextEditingController();
 
   @override
-  void initState() {
-    Provider.of<ImagePickerProvider>(context, listen: false).empty();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<ImagePickerProvider>(
       builder: (context, value, child) {
@@ -123,10 +117,13 @@ class _PostPageState extends State<PostPage> {
                                       child: Card(child: Text(result)));
                                 },
                               );
-                              if (result == 'Image uploaded') {
-                                // ignore: use_build_context_synchronously
-                                Navigator.pushReplacementNamed(context, 'MainScreen');
-                              }
+                              // ignore: use_build_context_synchronously
+                              Provider.of<ImagePickerProvider>(context,
+                                      listen: false)
+                                  .empty();
+                              // ignore: use_build_context_synchronously
+                              Navigator.pushReplacementNamed(
+                                  context, 'MainScreen');
                             }
                           },
                           child: const Text(
