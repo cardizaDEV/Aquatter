@@ -40,10 +40,12 @@ class _ColorConfigState extends State<ColorConfig> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height/(defaultPadding*2.5),
-                      width: MediaQuery.of(context).size.width/defaultPadding*4,
-                      color: currentBlack,
+                    Expanded(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height /
+                            (defaultPadding * 2.5),
+                        color: currentBlack,
+                      ),
                     ),
                     ElevatedButton(
                         onPressed: () {
@@ -78,10 +80,12 @@ class _ColorConfigState extends State<ColorConfig> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height/(defaultPadding*2.5),
-                      width: MediaQuery.of(context).size.width/defaultPadding*4,
-                      color: currentPrimary,
+                    Expanded(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height /
+                            (defaultPadding * 2.5),
+                        color: currentPrimary,
+                      ),
                     ),
                     ElevatedButton(
                         onPressed: () {
