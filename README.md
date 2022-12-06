@@ -1,7 +1,3 @@
-
-![Logo](https://i.postimg.cc/2yWT4tjD/Aquatter.png)
-
-
 # Aquatter
 
 Aquarium-oriented social network
