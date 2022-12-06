@@ -2,10 +2,13 @@
 
 Aquarium-oriented social network
 
-
 ## Authors
 
 - [@cardizaDEV](https://github.com/cardizaDEV)
+
+## Authors
+
+- [PFC](https://docs.google.com/document/d/1_say1Lq2MvkEPrPKQE16s6KCpXCOC6NXigZvFnUBtFQ/edit?usp=sharing)
 
 ## Color Reference
 
