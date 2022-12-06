@@ -17,5 +17,6 @@ Aquarium-oriented social network
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://i.imgur.com/KnsCQ1B.jpeg)![App Screenshot](https://i.imgur.com/julTMBs.jpeg)![App Screenshot](https://i.imgur.com/2Vzd5Sq.jpeg)
+![App Screenshot](https://i.imgur.com/VZGfHpl.jpeg)![App Screenshot](https://i.imgur.com/YrbDjyE.jpeg)
 
