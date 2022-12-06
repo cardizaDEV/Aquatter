@@ -1,5 +1,5 @@
 
-![Logo](https://i.postimg.cc/yN6fwnjm/Aquatter-7.png)
+![Logo](https://i.postimg.cc/2yWT4tjD/Aquatter.png)
 
 
 # Aquatter
