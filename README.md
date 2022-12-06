@@ -6,7 +6,7 @@ Aquarium-oriented social network
 
 - [@cardizaDEV](https://github.com/cardizaDEV)
 
-## Authors
+## PFC
 
 - [PFC](https://docs.google.com/document/d/1_say1Lq2MvkEPrPKQE16s6KCpXCOC6NXigZvFnUBtFQ/edit?usp=sharing)
 
